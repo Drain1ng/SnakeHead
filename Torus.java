@@ -90,6 +90,10 @@ public class Torus {
         return snake;
     }
 
+    public Object[][] getState() {
+        return state;
+    }
+
     public String toString() {
         String str = "";
         for(int i = 0; i < n; i++) {
