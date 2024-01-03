@@ -22,7 +22,7 @@ import java.util.*;
 
 public class View extends Application {
     private Torus torus;
-    private int n = 50, m = n;
+    private int n = 20, m = n;
     private int width = 800;
     private int height = width;
     private int blocksSize = width/n;
@@ -54,14 +54,14 @@ public class View extends Application {
             @Override
             public void handle(KeyEvent event) {   
                 switch (event.getCode()) {
-                case UP: snake.setDir(Direction.UP); break;
-                case DOWN: snake.setDir(Direction.DOWN); break;
-                case LEFT: snake.setDir(Direction.LEFT); break;
-                case RIGHT: snake.setDir(Direction.RIGHT); break;
-                default: return;
+                    case UP: snake.setDir(Direction.UP); break;
+                    case DOWN: snake.setDir(Direction.DOWN); break;
+                    case LEFT: snake.setDir(Direction.LEFT); break;
+                    case RIGHT: snake.setDir(Direction.RIGHT); break;
+                    default: return;
                 }
+                torus.move();
                 if(torus.isSnakeAlive()) {
-                    torus.move();
                     drawBoard(gc, torus);
                 } else {
                     gc.setFill(javafx.scene.paint.Color.RED);
