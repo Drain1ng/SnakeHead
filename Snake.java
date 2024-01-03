@@ -37,6 +37,15 @@ public class Snake {
         }
     }
 
+    public boolean isInBody(Point point) {
+        for (Point p : body) {
+            if (p.equals(point)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public ArrayList<Point> getBody() {
         return body;
     }

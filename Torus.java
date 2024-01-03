@@ -54,7 +54,6 @@ public class Torus {
         return isSnakeAlive;
     }
 
-    //ikke helt testet
     public void warpPoint(Point p) {
         p.setX((p.getX() % m + m) % m);
         p.setY((p.getY() % n + n) % n);
@@ -69,13 +68,12 @@ public class Torus {
     }
 
     public void spawnFood() {
-        // this is wrong. kan spawne i kroppen.
         //https://codereview.stackexchange.com/questions/151800/snake-in-javafx
         Random random = new Random();
         Point food;
         do {
             food = new Point(random.nextInt(n), random.nextInt(m));
-        } while (food.equals(snake.getHead()));
+        } while (snake.isInBody(food));
         setCell(food,food);
         this.food = food;
     }
