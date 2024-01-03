@@ -29,7 +29,7 @@ public class View extends Application {
     private Controller control;
     private Game game;
     public static void main(String[] args) {
-        //tørrelsen af torussen skal angives som kommandolinjeparametre til
+        //størrelsen af torussen skal angives som kommandolinjeparametre til
         //programmet, idet I er tilladt at antage n, m ∈ {5, · · · , 100}
         //implementer her (søg eventuelt på command line paramaters eller kig sidste kursus igennem)
         launch(args); // start JavaFX-engine

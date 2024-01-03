@@ -1,11 +1,8 @@
 public class Game {
-    private int n,m;
     private Torus map;
 
     public Game(int n, int m) {
         map = new Torus(n,m);
-        this.n = n;
-        this.m = m;
     }
 
     public void update() {
@@ -25,11 +22,11 @@ public class Game {
     }
 
     public int getN() {
-        return n;
+        return map.getN();
     }
 
     public int getM() {
-        return m;
+        return map.getM();
     }
 
 }
