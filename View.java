@@ -76,6 +76,10 @@ public class View extends Application {
     private void drawBoard(GraphicsContext gc, Torus torus) {
         gc.clearRect(0, 0, gc.getCanvas().getWidth(), gc.getCanvas().getHeight()); //clear Canvas https://stackoverflow.com/questions/27203671/javafx-how-to-clear-the-canvas
 
+        for (int i = 0; i < width / blocksSize; i++) {
+            gc.strokeLine(i * blocksSize, 0, i * blocksSize, width);
+            gc.strokeLine(0, i * blocksSize, height, i * blocksSize);
+        }
         for(int i = 0; i < torus.getN(); i++) {
             for(int k = 0; k < torus.getM(); k++) {
                 Object elem = torus.getState()[k][i];
