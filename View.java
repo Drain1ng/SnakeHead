@@ -1,3 +1,6 @@
+//run the following 2 commands to play:
+//javac -classpath . *.java
+//java View.java n m
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -26,22 +29,32 @@ import javafx.scene.image.ImageView;
 import java.util.*;
 
 public class View extends Application {
-    private int n = 5, m = n;
     private int width = 800;
     private int height = width;
-    private int blocksSize = width/n;
+    private int blocksSize;
     private GraphicsContext gc;
     private Controller control;
     private Game game;
     private Text score;
     private BorderPane root2;
     private int scoreCount;
+    private int n,m;
 
     public static void main(String[] args) {
-        //størrelsen af torussen skal angives som kommandolinjeparametre til
-        //programmet, idet I er tilladt at antage n, m ∈ {5, · · · , 100}
-        //implementer her (søg eventuelt på command line paramaters eller kig sidste kursus igennem)
-        launch(args); // start JavaFX-engine
+        launch(args);
+    }
+
+    public void init() {
+        List<String> args = getParameters().getRaw();
+        if (args.size() != 2) {
+                throw new IllegalArgumentException("Must be 2 arguments");
+        }
+        n = Integer.parseInt(args.get(0));
+        m = Integer.parseInt(args.get(1));
+        if (n < 5 || n > 100 || m < 5 || m > 100) {
+                throw new IllegalArgumentException("Must be 2 arguments");
+        }
+        blocksSize = width / n;
     }
 
     public void start(Stage primaryStage) {
