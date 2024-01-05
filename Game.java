@@ -22,18 +22,11 @@ public class Game {
     }
     
     public int getScore() {
-        return getMap().getSnake().getBody().size() - 2; //bruger snakelength til at vurdere score
+        return map.getSnake().getBody().size() - 2; //bruger snakelength til at vurdere score
     }
 
-
-    public int getN() {
-        return map.getN();
+    public boolean isGameWon() {
+        return map.getSnake().getSize() == map.getSize() - 1;
     }
 
-    public int getM() {
-        return map.getM();
-    }
-    public Torus getMap() {
-        return map;
-    }
 }

@@ -16,6 +16,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.canvas.Canvas;
@@ -35,6 +36,7 @@ public class View extends Application {
     private Text score;
     private BorderPane root2;
     private int scoreCount;
+  
     public static void main(String[] args) {
         //størrelsen af torussen skal angives som kommandolinjeparametre til
         //programmet, idet I er tilladt at antage n, m ∈ {5, · · · , 100}
@@ -45,10 +47,6 @@ public class View extends Application {
     public void start(Stage primaryStage) {
         game = new Game(n, m);
         control = new Controller(game, this);
-        Image img = new Image("BackDrop.jpg");
-        ImageView imgV = new ImageView(img);
-        imgV.setFitHeight(height);
-        imgV.setFitWidth(width);
         Canvas canvas = new Canvas(width, height); //canvastørrelse angives
         gc = canvas.getGraphicsContext2D();
         drawBoard();
@@ -58,11 +56,12 @@ public class View extends Application {
         score.setFill(javafx.scene.paint.Color.BLACK); //https://docs.oracle.com/javafx/2/ui_controls/label.htm har ændret til text
 
         StackPane root1 = new StackPane();
-        root1.getChildren().addAll(imgV, canvas);
+        root1.getChildren().addAll(getImageView("BackDrop.jpg"), canvas);
         root2 = new BorderPane();
         root2.getChildren().add(score);
 
         Scene scene = new Scene(new StackPane(root1, root2));
+
         primaryStage.setTitle("Snake");
         scene.setOnKeyPressed(control::handleKeyPress);
         primaryStage.setScene(scene);
@@ -84,10 +83,24 @@ public class View extends Application {
 
     public void drawBoard() {
         gc.clearRect(0, 0, gc.getCanvas().getWidth(), gc.getCanvas().getHeight()); //clear Canvas https://stackoverflow.com/questions/27203671/javafx-how-to-clear-the-canvas
+        for (int i = 0; i < width / blocksSize; i++) {
+            gc.strokeLine(i * blocksSize, 0, i * blocksSize, width);
+            gc.strokeLine(0, i * blocksSize, height, i * blocksSize);
+        }
+        Object[][] state = game.getState();
+        for(int i = 0; i < state.length; i++) {
+            for(int k = 0; k < state[i].length; k++) {
+                Object elem = state[k][i];
+              
+    public ImageView getImageView(String pathString) {
+        Image img = new Image(pathString);
+        ImageView imgV = new ImageView(img);
+        imgV.setFitHeight(height);
+        imgV.setFitWidth(width);
+        return imgV;
+    }
 
-        for(int i = 0; i < game.getN(); i++) {
-            for(int k = 0; k < game.getM(); k++) {
-                Object elem = game.getState()[k][i];
+
                 if(elem instanceof Snake) {
                     gc.setFill(javafx.scene.paint.Color.RED);
                     gc.fillRect(i * blocksSize, k * blocksSize, blocksSize, blocksSize);

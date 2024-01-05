@@ -70,4 +70,8 @@ public class Snake {
         return str;
     }
 
+    public int getSize() {
+        return size;
+    }
+
 }
