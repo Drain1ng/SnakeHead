@@ -21,4 +21,8 @@ public class Game {
         return !map.isSnakeAlive();
     }
 
+    public boolean isGameWon() {
+        return map.getSnake().getSize() == map.getSize() - 1;
+    }
+
 }

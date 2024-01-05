@@ -22,7 +22,9 @@ public class Controller {
                 default: return;
             }
             game.update();
-            if(!game.isGameOver()) {
+            if (game.isGameWon()) {
+                view.drawGameWon();
+            } else if(!game.isGameOver()) {
                 view.drawBoard();
             } else {
                 view.drawGameOver();

@@ -113,4 +113,8 @@ public class Torus {
         }
         return str;
     }
+
+    public int getSize() {
+        return n * m;
+    }
 }

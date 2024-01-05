@@ -23,7 +23,7 @@ import javafx.scene.image.ImageView;
 import java.util.*;
 
 public class View extends Application {
-    private int n = 20, m = n;
+    private int n = 5, m = n;
     private int width = 800;
     private int height = width;
     private int blocksSize = width/n;
@@ -68,6 +68,16 @@ public class View extends Application {
         gc.setFill(Color.WHITE);
         gc.fillText("GAME OVER",0, height/2,height);
         gc.strokeText("GAME OVER",0, height/2,height);
+    }
+
+    public void drawGameWon() {
+        gc.setFill(javafx.scene.paint.Color.BLACK);
+        gc.fillRect(0, 0, gc.getCanvas().getWidth(), gc.getCanvas().getHeight());
+        gc.setFont(new Font("Stencil", 200));
+        gc.setStroke(Color.ORANGE);
+        gc.setFill(Color.WHITE);
+        gc.fillText("GAME WON",0, height/2,height);
+        gc.strokeText("GAME WON",0, height/2,height);
     }
 
     public void drawBoard() {
