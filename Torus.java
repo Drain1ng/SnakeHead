@@ -12,9 +12,9 @@ public class Torus {
         state = new Object[n][m];
         this.n = n;
         this.m = m;
-        int y = n/2, x = m/2;
-        Point tail = new Point(x,y);
-        Point head = new Point(x,y + 1);
+        int x = n/2, y = m/2;
+        Point tail = new Point(x + 1,y);
+        Point head = new Point(x,y);
         Snake snake = new Snake(tail, head);
         for (Point p : snake.getBody()) {
             setCell(p, snake);
@@ -76,6 +76,10 @@ public class Torus {
         } while (snake.isInBody(food));
         setCell(food,food);
         this.food = food;
+    }
+
+    public Object getFood() {
+        return food;
     }
 
     public int getN() {
