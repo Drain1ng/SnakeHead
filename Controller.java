@@ -25,7 +25,7 @@ public class Controller {
             if(!game.isGameOver()) {
                 view.drawBoard();
             } else {
-                view.fillRed();
+                view.drawGameOver();
             }
         } catch (InputMismatchException e) {
             // hvis der kommer en InputMismatchException (i.e. retningskiftet ikke er muligt), så gør intet

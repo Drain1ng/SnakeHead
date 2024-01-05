@@ -12,6 +12,8 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.canvas.Canvas;
@@ -38,15 +40,11 @@ public class View extends Application {
     public void start(Stage primaryStage) {
         game = new Game(n,m);
         control = new Controller(game,this);
-        Image img = new Image("BackDrop.jpg");
-        ImageView imgV = new ImageView(img);
-        imgV.setFitHeight(height);
-        imgV.setFitWidth(width);
         Canvas canvas = new Canvas(width, height); //canvastørrelse angives
         gc = canvas.getGraphicsContext2D();
         drawBoard();
         StackPane root = new StackPane();
-        root.getChildren().addAll(imgV, canvas);
+        root.getChildren().addAll(getImageView("BackDrop.jpg"), canvas);
         Scene scene = new Scene(root);
         primaryStage.setTitle("Snake");
         scene.setOnKeyPressed(control::handleKeyPress);
@@ -54,22 +52,34 @@ public class View extends Application {
         primaryStage.show();
     }
 
+    public ImageView getImageView(String pathString) {
+        Image img = new Image(pathString);
+        ImageView imgV = new ImageView(img);
+        imgV.setFitHeight(height);
+        imgV.setFitWidth(width);
+        return imgV;
+    }
 
-    public void fillRed() {
-        gc.setFill(javafx.scene.paint.Color.RED);
+    public void drawGameOver() {
+        gc.setFill(javafx.scene.paint.Color.BLACK);
         gc.fillRect(0, 0, gc.getCanvas().getWidth(), gc.getCanvas().getHeight());
+        gc.setFont(new Font("Stencil", 200));
+        gc.setStroke(Color.ORANGE);
+        gc.setFill(Color.WHITE);
+        gc.fillText("GAME OVER",0, height/2,height);
+        gc.strokeText("GAME OVER",0, height/2,height);
     }
 
     public void drawBoard() {
         gc.clearRect(0, 0, gc.getCanvas().getWidth(), gc.getCanvas().getHeight()); //clear Canvas https://stackoverflow.com/questions/27203671/javafx-how-to-clear-the-canvas
-
         for (int i = 0; i < width / blocksSize; i++) {
             gc.strokeLine(i * blocksSize, 0, i * blocksSize, width);
             gc.strokeLine(0, i * blocksSize, height, i * blocksSize);
         }
-        for(int i = 0; i < game.getN(); i++) {
-            for(int k = 0; k < game.getM(); k++) {
-                Object elem = game.getState()[k][i];
+        Object[][] state = game.getState();
+        for(int i = 0; i < state.length; i++) {
+            for(int k = 0; k < state[i].length; k++) {
+                Object elem = state[k][i];
                 if(elem instanceof Snake) {
                     gc.setFill(javafx.scene.paint.Color.RED);
                     gc.fillRect(i * blocksSize, k * blocksSize, blocksSize, blocksSize);

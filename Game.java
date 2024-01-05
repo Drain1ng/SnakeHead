@@ -21,12 +21,4 @@ public class Game {
         return !map.isSnakeAlive();
     }
 
-    public int getN() {
-        return map.getN();
-    }
-
-    public int getM() {
-        return map.getM();
-    }
-
 }

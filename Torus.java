@@ -28,7 +28,7 @@ public class Torus {
         Point nextPoint = snake.getNextPoint();
         warpPoint(nextPoint);
         Object cell = getCell(nextPoint);
-        if (cell == null || cell == snake.getTail()) {
+        if (cell == null || nextPoint.equals(snake.getTail())) {
             setCell(snake.getTail(),null);
             snake.move(false);
             Point head = snake.getHead();
