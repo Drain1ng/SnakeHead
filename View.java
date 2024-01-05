@@ -30,7 +30,7 @@ import java.util.*;
 
 public class View extends Application {
     private int width = 800;
-    private int height = width;
+    private int height = 800;
     private int blocksSize;
     private GraphicsContext gc;
     private Controller control;
@@ -45,6 +45,10 @@ public class View extends Application {
     }
 
     public void init() {
+        //https://openjfx.io/javadoc/17/javafx.graphics/javafx/application/Application.html#getParameters()
+        //https://stackoverflow.com/questions/24611789/how-to-pass-parameters-to-javafx-application
+        //https://docs.oracle.com/javase/8/javafx/api/javafx/application/Application.Parameters.html#getRaw--
+        //https://docs.oracle.com/javase/8/javafx/api/javafx/application/Application.Parameters.html
         List<String> args = getParameters().getRaw();
         if (args.size() != 2) {
                 throw new IllegalArgumentException("Must be 2 arguments");
@@ -54,7 +58,13 @@ public class View extends Application {
         if (n < 5 || n > 100 || m < 5 || m > 100) {
                 throw new IllegalArgumentException("Must be 2 arguments");
         }
-        blocksSize = width / n;
+        int max = n < m ? m : n;
+        int min = n > m ? m : n;
+        blocksSize = height / max;
+        width = m * blocksSize;
+        height = n * blocksSize;
+        System.out.println(width + " x " + height);
+
     }
 
     public void start(Stage primaryStage) {
@@ -104,16 +114,16 @@ public class View extends Application {
         Object[][] state = game.getState();
         for(int i = 0; i < state.length; i++) {
             for(int k = 0; k < state[i].length; k++) {
-                Object elem = state[k][i];
+                Object elem = state[i][k];
                 if(elem instanceof Snake) {
                     gc.setFill(javafx.scene.paint.Color.RED);
-                    gc.fillRect(i * blocksSize, k * blocksSize, blocksSize, blocksSize);
+                    gc.fillRect(k * blocksSize, i * blocksSize, blocksSize, blocksSize);
                 }
                 else if(elem == null) {
 
                 } else {
                     gc.setFill(javafx.scene.paint.Color.ORANGE);
-                    gc.fillRect(i * blocksSize, k * blocksSize, blocksSize, blocksSize);
+                    gc.fillRect(k * blocksSize, i * blocksSize, blocksSize, blocksSize);
                 }
             }
         }

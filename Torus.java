@@ -1,5 +1,7 @@
 import java.util.Random;
 
+import javax.swing.plaf.synth.SynthUI;
+
 public class Torus {
     private int n;
     private int m;
@@ -12,7 +14,7 @@ public class Torus {
         state = new Object[n][m];
         this.n = n;
         this.m = m;
-        int x = n/2, y = m/2;
+        int x = m/2, y = n/2;
         Point tail = new Point(x + 1,y);
         Point head = new Point(x,y);
         Snake snake = new Snake(tail, head);
@@ -74,7 +76,7 @@ public class Torus {
         Random random = new Random();
         Point food;
         do {
-            food = new Point(random.nextInt(n), random.nextInt(m));
+            food = new Point(random.nextInt(m), random.nextInt(n));
         } while (snake.isInBody(food));
         setCell(food,food);
         this.food = food;
