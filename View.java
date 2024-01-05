@@ -1,7 +1,11 @@
+//run the following 2 commands to play:
+//javac -classpath . *.java
+//java View.java n m
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -26,24 +30,39 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import java.util.*;
+import javafx.stage.Screen;
 
 public class View extends Application {
-    private int n = 10, m = n;
-    private int width = 800;
-    private int height = width;
-    private int blocksSize = width/n;
+    private int width;
+    private int height;
+    private int blocksSize;
     private GraphicsContext gc;
     private Controller control;
     private Game game;
     private Text score, scoreEnd;
     private BorderPane root2;
     private int scoreCount;
+    private int n,m;
 
     public static void main(String[] args) {
-        //størrelsen af torussen skal angives som kommandolinjeparametre til
-        //programmet, idet I er tilladt at antage n, m ∈ {5, · · · , 100}
-        //implementer her (søg eventuelt på command line paramaters eller kig sidste kursus igennem)
-        launch(args); // start JavaFX-engine
+        launch(args);
+    }
+
+    public void init() {
+        //https://openjfx.io/javadoc/17/javafx.graphics/javafx/application/Application.html#getParameters()
+        //https://stackoverflow.com/questions/24611789/how-to-pass-parameters-to-javafx-application
+        //https://docs.oracle.com/javase/8/javafx/api/javafx/application/Application.Parameters.html#getRaw--
+        //https://docs.oracle.com/javase/8/javafx/api/javafx/application/Application.Parameters.html
+        List<String> args = getParameters().getRaw();
+        if (args.size() != 2) {
+                throw new IllegalArgumentException("Must be 2 arguments");
+        }
+        n = Integer.parseInt(args.get(0));
+        m = Integer.parseInt(args.get(1));
+        if (n < 5 || n > 100 || m < 5 || m > 100) {
+                throw new IllegalArgumentException("Must be 2 arguments");
+        }
+        setDims();
     }
 
     public void start(Stage primaryStage) {
@@ -85,16 +104,16 @@ public class View extends Application {
         Object[][] state = game.getState();
         for(int i = 0; i < state.length; i++) {
             for(int k = 0; k < state[i].length; k++) {
-                Object elem = state[k][i];
+                Object elem = state[i][k];
                 if(elem instanceof Snake) {
                     gc.setFill(javafx.scene.paint.Color.RED);
-                    gc.fillRect(i * blocksSize, k * blocksSize, blocksSize, blocksSize);
+                    gc.fillRect(k * blocksSize, i * blocksSize, blocksSize, blocksSize);
                 }
                 else if(elem == null) {
 
                 } else {
                     gc.setFill(javafx.scene.paint.Color.ORANGE);
-                    gc.fillRect(i * blocksSize, k * blocksSize, blocksSize, blocksSize);
+                    gc.fillRect(k * blocksSize, i * blocksSize, blocksSize, blocksSize);
                 }
             }
         }
@@ -114,11 +133,27 @@ public class View extends Application {
         scoreEnd.setTextAlignment(TextAlignment.CENTER);
     }
 
+
     public ImageView getImageView(String pathString) {
         Image img = new Image(pathString);
         ImageView imgV = new ImageView(img);
         imgV.setFitHeight(height);
         imgV.setFitWidth(width);
         return imgV;
+    }
+
+    public void setDims() {
+        Rectangle2D screenBounds = Screen.getPrimary().getBounds();
+        int maxWidth = (int) screenBounds.getWidth();
+        int maxHeight = (int) screenBounds.getHeight();
+        int max = n < m ? m : n;
+        blocksSize = maxHeight / max;
+        width = m * blocksSize;
+        height = n * blocksSize;
+        while (width + m <= maxWidth && height + n <= maxHeight) {
+            blocksSize++;
+            width += m;
+            height += n;
+        }
     }
 }

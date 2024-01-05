@@ -22,13 +22,13 @@ public class Controller {
                 default: return;
             }
             game.update();
+            view.updateScore(game.getScore());
             if (game.isGameWon()) {
-                view.deathMessage();
+                view.message(true);
             } else if(!game.isGameOver()) {
-                view.updateScore(game.getScore());
                 view.drawBoard();
             } else {
-                view.deathMessage();
+                view.message(false);
             }
         } catch (InputMismatchException e) {
             // hvis der kommer en InputMismatchException (i.e. retningskiftet ikke er muligt), så gør intet
