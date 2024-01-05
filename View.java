@@ -15,11 +15,13 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import javafx.scene.text.TextFlow;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.scene.input.MouseEvent;
@@ -37,7 +39,7 @@ public class View extends Application {
     private GraphicsContext gc;
     private Controller control;
     private Game game;
-    private Text score;
+    private Text score, scoreEnd;
     private BorderPane root2;
     private int scoreCount;
     private int n,m;
@@ -69,18 +71,11 @@ public class View extends Application {
         Canvas canvas = new Canvas(width, height); //canvastørrelse angives
         gc = canvas.getGraphicsContext2D();
         drawBoard();
-
-        score = new Text(15, 35, "Score: " + 0);
-        score.setFont(new Font("Ariel", 32));
-        score.setFill(javafx.scene.paint.Color.BLACK); //https://docs.oracle.com/javafx/2/ui_controls/label.htm har ændret til text
-
         StackPane root1 = new StackPane();
         root1.getChildren().addAll(getImageView("BackDrop.jpg"), canvas);
         root2 = new BorderPane();
-        root2.getChildren().add(score);
-
+        initiateText();
         Scene scene = new Scene(new StackPane(root1, root2));
-
         primaryStage.setTitle("Snake");
         scene.setOnKeyPressed(control::handleKeyPress);
         primaryStage.setScene(scene);
@@ -89,16 +84,15 @@ public class View extends Application {
 
     public void updateScore(int snakeLength) {
         scoreCount = snakeLength;
-        score.setText("Score: " + scoreCount);
+        score.setText("  Score: " + scoreCount);
     }
 
     public void message(boolean win) {
         String message = win ? "GOOD JOB" : "YOU LOSE";
         gc.setFill(javafx.scene.paint.Color.RED);
         gc.fillRect(0, 0, gc.getCanvas().getWidth(), gc.getCanvas().getHeight());
-        score.setText(message + "\nScore: " + scoreCount);
-        score.setTextAlignment(TextAlignment.CENTER);
-        root2.setCenter(score);
+        scoreEnd.setText(message + "\nScore: " + scoreCount);
+        score.setText("");
     }
 
     public void drawBoard() {
@@ -129,6 +123,16 @@ public class View extends Application {
         }
     }
 
+    public void initiateText() {
+        score = new Text("  Score: " + 0);
+        scoreEnd = new Text("");
+        root2.setTop(score);
+        root2.setCenter(scoreEnd);
+        score.setFont(new Font("Ariel", 32));
+        scoreEnd.setFont(new Font("Ariel", 32));
+        scoreEnd.setTextAlignment(TextAlignment.CENTER);
+    }
+
 
     public ImageView getImageView(String pathString) {
         Image img = new Image(pathString);
@@ -142,12 +146,10 @@ public class View extends Application {
         Rectangle2D screenBounds = Screen.getPrimary().getBounds();
         int maxWidth = (int) screenBounds.getWidth();
         int maxHeight = (int) screenBounds.getHeight();
-        System.out.println(screenBounds);
         int max = n < m ? m : n;
         blocksSize = maxHeight / max;
         width = m * blocksSize;
         height = n * blocksSize;
-        System.out.println(width + " x " + height);
         while (width + m <= maxWidth && height + n <= maxHeight) {
             blocksSize++;
             width += m;
