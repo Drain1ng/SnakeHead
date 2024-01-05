@@ -78,6 +78,10 @@ public class Torus {
         this.food = food;
     }
 
+    public Object getFood() {
+        return food;
+    }
+
     public int getN() {
         return n;
     }
