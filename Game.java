@@ -29,4 +29,12 @@ public class Game {
         return map.getSnake().getSize() == map.getSize();
     }
 
+    public Point getSnakeHead() {
+        return map.getSnake().getHead();
+    }
+
+    public Point getSnakeTail() {
+        return map.getSnake().getTail();
+    }
+
 }
