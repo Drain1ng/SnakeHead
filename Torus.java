@@ -39,7 +39,9 @@ public class Torus {
             Point head = snake.getHead();
             warpPoint(head);
             setCell(head, snake);
-            spawnFood();
+            if (snake.getSize() < getSize()) {
+                spawnFood();
+            }
         } else if (cell == snake) {
             snake.move(false);
             Point head = snake.getHead();
@@ -76,6 +78,10 @@ public class Torus {
         } while (snake.isInBody(food));
         setCell(food,food);
         this.food = food;
+    }
+
+    public Object getFood() {
+        return food;
     }
 
     public int getN() {
