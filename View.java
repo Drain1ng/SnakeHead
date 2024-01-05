@@ -11,11 +11,13 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import javafx.scene.text.TextFlow;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.scene.input.MouseEvent;
@@ -26,17 +28,17 @@ import javafx.scene.image.ImageView;
 import java.util.*;
 
 public class View extends Application {
-    private int n = 20, m = n;
+    private int n = 10, m = n;
     private int width = 800;
     private int height = width;
     private int blocksSize = width/n;
     private GraphicsContext gc;
     private Controller control;
     private Game game;
-    private Text score;
+    private Text score, scoreEnd;
     private BorderPane root2;
     private int scoreCount;
-  
+
     public static void main(String[] args) {
         //størrelsen af torussen skal angives som kommandolinjeparametre til
         //programmet, idet I er tilladt at antage n, m ∈ {5, · · · , 100}
@@ -50,18 +52,11 @@ public class View extends Application {
         Canvas canvas = new Canvas(width, height); //canvastørrelse angives
         gc = canvas.getGraphicsContext2D();
         drawBoard();
-
-        score = new Text(15, 35, "Score: " + 0);
-        score.setFont(new Font("Ariel", 32));
-        score.setFill(javafx.scene.paint.Color.BLACK); //https://docs.oracle.com/javafx/2/ui_controls/label.htm har ændret til text
-
         StackPane root1 = new StackPane();
         root1.getChildren().addAll(getImageView("BackDrop.jpg"), canvas);
         root2 = new BorderPane();
-        root2.getChildren().add(score);
-
+        initiateText();
         Scene scene = new Scene(new StackPane(root1, root2));
-
         primaryStage.setTitle("Snake");
         scene.setOnKeyPressed(control::handleKeyPress);
         primaryStage.setScene(scene);
@@ -70,15 +65,15 @@ public class View extends Application {
 
     public void updateScore(int snakeLength) {
         scoreCount = snakeLength;
-        score.setText("Score: " + scoreCount);
+        score.setText("  Score: " + scoreCount);
     }
 
-    public void deathMessage() {
+    public void message(boolean win) {
+        String message = win ? "GOOD JOB" : "YOU LOSE";
         gc.setFill(javafx.scene.paint.Color.RED);
         gc.fillRect(0, 0, gc.getCanvas().getWidth(), gc.getCanvas().getHeight());
-        score.setText("HAHAHA TABER!\nScore: " + scoreCount);
-        score.setTextAlignment(TextAlignment.CENTER);
-        root2.setCenter(score);
+        scoreEnd.setText(message + "\nScore: " + scoreCount);
+        score.setText("");
     }
 
     public void drawBoard() {
@@ -91,16 +86,6 @@ public class View extends Application {
         for(int i = 0; i < state.length; i++) {
             for(int k = 0; k < state[i].length; k++) {
                 Object elem = state[k][i];
-              
-    public ImageView getImageView(String pathString) {
-        Image img = new Image(pathString);
-        ImageView imgV = new ImageView(img);
-        imgV.setFitHeight(height);
-        imgV.setFitWidth(width);
-        return imgV;
-    }
-
-
                 if(elem instanceof Snake) {
                     gc.setFill(javafx.scene.paint.Color.RED);
                     gc.fillRect(i * blocksSize, k * blocksSize, blocksSize, blocksSize);
@@ -119,4 +104,21 @@ public class View extends Application {
         }
     }
 
+    public void initiateText() {
+        score = new Text("  Score: " + 0);
+        scoreEnd = new Text("");
+        root2.setTop(score);
+        root2.setCenter(scoreEnd);
+        score.setFont(new Font("Ariel", 32));
+        scoreEnd.setFont(new Font("Ariel", 32));
+        scoreEnd.setTextAlignment(TextAlignment.CENTER);
+    }
+
+    public ImageView getImageView(String pathString) {
+        Image img = new Image(pathString);
+        ImageView imgV = new ImageView(img);
+        imgV.setFitHeight(height);
+        imgV.setFitWidth(width);
+        return imgV;
+    }
 }
