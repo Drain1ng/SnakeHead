@@ -20,13 +20,13 @@ public class Game {
     public boolean isGameOver() {
         return !map.isSnakeAlive();
     }
-    
+
     public int getScore() {
         return map.getSnake().getBody().size() - 2; //bruger snakelength til at vurdere score
     }
 
     public boolean isGameWon() {
-        return map.getSnake().getSize() == map.getSize() - 1;
+        return map.getSnake().getSize() == map.getSize();
     }
 
 }

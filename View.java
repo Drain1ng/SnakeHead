@@ -26,7 +26,7 @@ import javafx.scene.image.ImageView;
 import java.util.*;
 
 public class View extends Application {
-    private int n = 20, m = n;
+    private int n = 5, m = n;
     private int width = 800;
     private int height = width;
     private int blocksSize = width/n;
@@ -36,7 +36,7 @@ public class View extends Application {
     private Text score;
     private BorderPane root2;
     private int scoreCount;
-  
+
     public static void main(String[] args) {
         //størrelsen af torussen skal angives som kommandolinjeparametre til
         //programmet, idet I er tilladt at antage n, m ∈ {5, · · · , 100}
@@ -73,10 +73,11 @@ public class View extends Application {
         score.setText("Score: " + scoreCount);
     }
 
-    public void deathMessage() {
+    public void message(boolean win) {
+        String message = win ? "GOOD JOB" : "YOU LOSE";
         gc.setFill(javafx.scene.paint.Color.RED);
         gc.fillRect(0, 0, gc.getCanvas().getWidth(), gc.getCanvas().getHeight());
-        score.setText("HAHAHA TABER!\nScore: " + scoreCount);
+        score.setText(message + "\nScore: " + scoreCount);
         score.setTextAlignment(TextAlignment.CENTER);
         root2.setCenter(score);
     }
@@ -91,16 +92,6 @@ public class View extends Application {
         for(int i = 0; i < state.length; i++) {
             for(int k = 0; k < state[i].length; k++) {
                 Object elem = state[k][i];
-              
-    public ImageView getImageView(String pathString) {
-        Image img = new Image(pathString);
-        ImageView imgV = new ImageView(img);
-        imgV.setFitHeight(height);
-        imgV.setFitWidth(width);
-        return imgV;
-    }
-
-
                 if(elem instanceof Snake) {
                     gc.setFill(javafx.scene.paint.Color.RED);
                     gc.fillRect(i * blocksSize, k * blocksSize, blocksSize, blocksSize);
@@ -119,4 +110,12 @@ public class View extends Application {
         }
     }
 
+
+    public ImageView getImageView(String pathString) {
+        Image img = new Image(pathString);
+        ImageView imgV = new ImageView(img);
+        imgV.setFitHeight(height);
+        imgV.setFitWidth(width);
+        return imgV;
+    }
 }
