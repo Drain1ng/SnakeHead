@@ -5,6 +5,7 @@ import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -27,10 +28,11 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import java.util.*;
+import javafx.stage.Screen;
 
 public class View extends Application {
-    private int width = 800;
-    private int height = 800;
+    private int width;
+    private int height;
     private int blocksSize;
     private GraphicsContext gc;
     private Controller control;
@@ -58,13 +60,7 @@ public class View extends Application {
         if (n < 5 || n > 100 || m < 5 || m > 100) {
                 throw new IllegalArgumentException("Must be 2 arguments");
         }
-        int max = n < m ? m : n;
-        int min = n > m ? m : n;
-        blocksSize = height / max;
-        width = m * blocksSize;
-        height = n * blocksSize;
-        System.out.println(width + " x " + height);
-
+        setDims();
     }
 
     public void start(Stage primaryStage) {
@@ -140,5 +136,22 @@ public class View extends Application {
         imgV.setFitHeight(height);
         imgV.setFitWidth(width);
         return imgV;
+    }
+
+    public void setDims() {
+        Rectangle2D screenBounds = Screen.getPrimary().getBounds();
+        int maxWidth = (int) screenBounds.getWidth();
+        int maxHeight = (int) screenBounds.getHeight();
+        System.out.println(screenBounds);
+        int max = n < m ? m : n;
+        blocksSize = maxHeight / max;
+        width = m * blocksSize;
+        height = n * blocksSize;
+        System.out.println(width + " x " + height);
+        while (width + m <= maxWidth && height + n <= maxHeight) {
+            blocksSize++;
+            width += m;
+            height += n;
+        }
     }
 }
