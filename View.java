@@ -97,10 +97,6 @@ public class View extends Application {
 
     public void drawBoard() {
         gc.clearRect(0, 0, gc.getCanvas().getWidth(), gc.getCanvas().getHeight()); //clear Canvas https://stackoverflow.com/questions/27203671/javafx-how-to-clear-the-canvas
-        for (int i = 0; i < width / blocksSize; i++) {
-            gc.strokeLine(i * blocksSize, 0, i * blocksSize, width);
-            gc.strokeLine(0, i * blocksSize, height, i * blocksSize);
-        }
         Object[][] state = game.getState();
         for(int i = 0; i < state.length; i++) {
             for(int k = 0; k < state[i].length; k++) {
@@ -118,9 +114,12 @@ public class View extends Application {
             }
         }
         for (int i = 0; i < width / blocksSize; i++) {
-            gc.strokeLine(i * blocksSize, 0, i * blocksSize, width);
-            gc.strokeLine(0, i * blocksSize, height, i * blocksSize);
+            gc.strokeLine(i * blocksSize, 0, i * blocksSize, height);
         }
+        for (int i = 0; i < height / blocksSize; i++) {
+            gc.strokeLine(0, i * blocksSize, width, i * blocksSize);
+        }
+
     }
 
     public void initiateText() {
