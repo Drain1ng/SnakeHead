@@ -37,6 +37,7 @@ public class View extends Application {
     private int height;
     private int blocksSize;
     private GraphicsContext gc;
+    private GraphicsContext gcBack;
     private Controller control;
     private Game game;
     private Text score, scoreEnd;
@@ -69,10 +70,13 @@ public class View extends Application {
         game = new Game(n, m);
         control = new Controller(game, this);
         Canvas canvas = new Canvas(width, height); //canvastørrelse angives
+        Canvas background = new Canvas(width, height);
         gc = canvas.getGraphicsContext2D();
+        gcBack = background.getGraphicsContext2D();
+        drawBackground();
         drawBoard();
         StackPane root1 = new StackPane();
-        root1.getChildren().addAll(getImageView("BackDrop.jpg"), canvas);
+        root1.getChildren().addAll(background, canvas);
         root2 = new BorderPane();
         initiateText();
         Scene scene = new Scene(new StackPane(root1, root2));
@@ -113,6 +117,7 @@ public class View extends Application {
                 }
             }
         }
+        gc.setStroke(Color.BLACK);
         for (int i = 0; i < width / blocksSize; i++) {
             gc.strokeLine(i * blocksSize, 0, i * blocksSize, height);
         }
@@ -128,6 +133,7 @@ public class View extends Application {
         root2.setTop(score);
         root2.setCenter(scoreEnd);
         score.setFont(new Font("Ariel", 32));
+        score.setFill(Color.GREEN);
         scoreEnd.setFont(new Font("Ariel", 32));
         scoreEnd.setTextAlignment(TextAlignment.CENTER);
     }
@@ -153,6 +159,19 @@ public class View extends Application {
             blocksSize++;
             width += m;
             height += n;
+        }
+    }
+
+    public void drawBackground() {
+        for(int i = 0; i < n; i++) {
+            for(int k = 0; k < m; k++) {
+                if((i + k) % 2 == 0) {
+                    gcBack.setFill(Color.DIMGRAY);
+                } else {
+                    gcBack.setFill(Color.CORNSILK);
+                }
+                gcBack.fillRect(k * blocksSize, i * blocksSize, blocksSize, blocksSize);
+            }
         }
     }
 }
