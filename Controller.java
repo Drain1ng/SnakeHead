@@ -26,7 +26,7 @@ public class Controller {
             if (game.isGameWon()) {
                 view.message(true);
             } else if(!game.isGameOver()) {
-                view.drawBoard();
+                view.updateSnake();
             } else {
                 view.message(false);
             }

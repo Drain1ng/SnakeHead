@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public class Game {
     private Torus map;
 
@@ -35,6 +37,14 @@ public class Game {
 
     public Point getSnakeTail() {
         return map.getSnake().getTail();
+    }
+
+    public ArrayList<Point> getBody() {
+        return map.getSnake().getBody();
+    }
+
+    public Point getFood() {
+        return map.getFood();
     }
 
 }

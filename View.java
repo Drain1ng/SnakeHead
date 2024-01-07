@@ -38,6 +38,7 @@ public class View extends Application {
     private int blocksSize;
     private GraphicsContext gc;
     private GraphicsContext gcBack;
+    private GraphicsContext gcSnake;
     private Controller control;
     private Game game;
     private Text score, scoreEnd;
@@ -69,14 +70,9 @@ public class View extends Application {
     public void start(Stage primaryStage) {
         game = new Game(n, m);
         control = new Controller(game, this);
-        Canvas canvas = new Canvas(width, height); //canvastørrelse angives
-        Canvas background = new Canvas(width, height);
-        gc = canvas.getGraphicsContext2D();
-        gcBack = background.getGraphicsContext2D();
-        drawBackground();
-        drawBoard();
+        Canvas[] board = drawGame();
         StackPane root1 = new StackPane();
-        root1.getChildren().addAll(background, canvas);
+        root1.getChildren().addAll(board[0], board[1], board[2]);
         root2 = new BorderPane();
         initiateText();
         Scene scene = new Scene(new StackPane(root1, root2));
@@ -99,24 +95,8 @@ public class View extends Application {
         score.setText("");
     }
 
-    public void drawBoard() {
-        gc.clearRect(0, 0, gc.getCanvas().getWidth(), gc.getCanvas().getHeight()); //clear Canvas https://stackoverflow.com/questions/27203671/javafx-how-to-clear-the-canvas
-        Object[][] state = game.getState();
-        for(int i = 0; i < state.length; i++) {
-            for(int k = 0; k < state[i].length; k++) {
-                Object elem = state[i][k];
-                if(elem instanceof Snake) {
-                    gc.setFill(javafx.scene.paint.Color.RED);
-                    gc.fillRect(k * blocksSize, i * blocksSize, blocksSize, blocksSize);
-                }
-                else if(elem == null) {
-
-                } else {
-                    gc.setFill(javafx.scene.paint.Color.ORANGE);
-                    gc.fillRect(k * blocksSize, i * blocksSize, blocksSize, blocksSize);
-                }
-            }
-        }
+    public void drawGrid() {
+        //clear Canvas https://stackoverflow.com/questions/27203671/javafx-how-to-clear-the-canvas
         gc.setStroke(Color.BLACK);
         for (int i = 0; i < width / blocksSize; i++) {
             gc.strokeLine(i * blocksSize, 0, i * blocksSize, height);
@@ -125,6 +105,18 @@ public class View extends Application {
             gc.strokeLine(0, i * blocksSize, width, i * blocksSize);
         }
 
+    }
+
+    public void updateSnake() {
+        gcSnake.clearRect(0, 0, gc.getCanvas().getWidth(), gc.getCanvas().getHeight());
+        List<Point> body = game.getBody();
+        Point food = game.getFood();
+        gcSnake.setFill(javafx.scene.paint.Color.RED);
+        for (Point snake: body) {
+            gcSnake.fillRect(snake.getX() * blocksSize, snake.getY() * blocksSize, blocksSize, blocksSize);
+        }
+        gcSnake.setFill(javafx.scene.paint.Color.ORANGE);
+        gcSnake.fillRect(food.getX() * blocksSize, food.getY() * blocksSize, blocksSize, blocksSize);
     }
 
     public void initiateText() {
@@ -173,5 +165,19 @@ public class View extends Application {
                 gcBack.fillRect(k * blocksSize, i * blocksSize, blocksSize, blocksSize);
             }
         }
+    }
+
+    public Canvas[] drawGame() {
+        Canvas canvas = new Canvas(width, height); //canvastørrelse angives
+        Canvas background = new Canvas(width, height);
+        Canvas snake = new Canvas(width, height);
+        gc = canvas.getGraphicsContext2D();
+        gcBack = background.getGraphicsContext2D();
+        gcSnake = snake.getGraphicsContext2D();
+        drawBackground();
+        drawGrid();
+        updateSnake();
+        Canvas[] board = {background, snake, canvas};
+        return board;
     }
 }

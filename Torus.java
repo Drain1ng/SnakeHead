@@ -82,7 +82,7 @@ public class Torus {
         this.food = food;
     }
 
-    public Object getFood() {
+    public Point getFood() {
         return food;
     }
 
