@@ -13,8 +13,6 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import java.util.*;
 import javafx.stage.Screen;
 
@@ -82,7 +80,7 @@ public class View extends Application {
     }
 
     public void drawGrid() {
-        gc.setStroke(Color.BLACK);
+        gc.setStroke(Color.GRAY);
         for (int i = 0; i < width / blocksSize; i++) {
             gc.strokeLine(i * blocksSize, 0, i * blocksSize, height);
         }
@@ -99,10 +97,10 @@ public class View extends Application {
         Point food = game.getFood();
         for (Point snake: body) {
             if(body.get(body.size()-1) == snake) {
-                gcSnake.setFill(javafx.scene.paint.Color.BLACK);
+                gcSnake.setFill(javafx.scene.paint.Color.GREEN);
                 gcSnake.fillRect(snake.getX() * blocksSize, snake.getY() * blocksSize, blocksSize, blocksSize);
             } else {
-                gcSnake.setFill(javafx.scene.paint.Color.RED);
+                gcSnake.setFill(javafx.scene.paint.Color.LIGHTGREEN);
                 gcSnake.fillRect(snake.getX() * blocksSize, snake.getY() * blocksSize, blocksSize, blocksSize);
             }
         }
@@ -137,16 +135,9 @@ public class View extends Application {
     }
 
     public void drawBackground() {
-        for(int i = 0; i < n; i++) {
-            for(int k = 0; k < m; k++) {
-                if((i + k) % 2 == 0) {
-                    gcBack.setFill(Color.DIMGRAY);
-                } else {
-                    gcBack.setFill(Color.CORNSILK);
-                }
-                gcBack.fillRect(k * blocksSize, i * blocksSize, blocksSize, blocksSize);
-            }
-        }
+        gcBack.setFill(Color.BLACK);
+        gcBack.fillRect(0, 0, gc.getCanvas().getWidth(), gc.getCanvas().getHeight());
+        drawGrid();
     }
 
     public Canvas[] drawGame() {
@@ -157,7 +148,6 @@ public class View extends Application {
         Canvas snake = new Canvas(width, height);
         gcSnake = snake.getGraphicsContext2D();
         drawBackground();
-        drawGrid();
         updateSnake();
         Canvas[] board = {background, snake, canvas};
         return board;
