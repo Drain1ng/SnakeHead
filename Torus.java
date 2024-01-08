@@ -16,6 +16,7 @@ public class Torus {
         Point tail = new Point(x + 1,y);
         Point head = new Point(x,y);
         Snake snake = new Snake(tail, head);
+        snake.setTorus(this);
         for (Point p : snake.getBody()) {
             setCell(p, snake);
         }
@@ -27,29 +28,21 @@ public class Torus {
 
     public void move() {
         Point nextPoint = snake.getNextPoint();
-        warpPoint(nextPoint);
         Object cell = getCell(nextPoint);
         if (cell == null || nextPoint.equals(snake.getTail())) {
             setCell(snake.getTail(),null);
-            snake.move(false);
-            Point head = snake.getHead();
-            warpPoint(head);
-            setCell(head, snake);
+            snake.move();
         } else if (cell == food) {
-            snake.move(true);
-            Point head = snake.getHead();
-            warpPoint(head);
-            setCell(head, snake);
+            snake.extend();
             if (snake.getSize() < getSize()) {
                 spawnFood();
             }
         } else if (cell == snake) {
-            snake.move(false);
-            Point head = snake.getHead();
-            warpPoint(head);
-            setCell(head, "DEAD");
+            snake.move();
             isSnakeAlive = false;
         }
+        Point head = snake.getHead();
+        setCell(head, snake);
 
     }
 
@@ -57,7 +50,7 @@ public class Torus {
         return isSnakeAlive;
     }
 
-    public void warpPoint(Point p) {
+    public void restrictPoint(Point p) {
         p.setX((p.getX() % m + m) % m);
         p.setY((p.getY() % n + n) % n);
     }

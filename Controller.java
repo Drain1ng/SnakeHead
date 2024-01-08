@@ -29,7 +29,7 @@ public class Controller {
             } else {
                 view.message(false);
             }
-        } catch (InputMismatchException e) {
+        } catch (IllegalArgumentException e) {
             // do nothing in case of invalid direction
         }
     }

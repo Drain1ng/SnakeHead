@@ -1,10 +1,10 @@
 import java.util.ArrayList;
-import java.util.InputMismatchException;
 
 public class Snake {
     private Direction direction;
     private ArrayList<Point> body;
     private int size;
+    private Torus torus;
 
     public Snake(Point tail, Point head) {
         body = new ArrayList<Point>();
@@ -14,21 +14,47 @@ public class Snake {
         size = 2;
     }
 
+    public void setTorus(Torus torus) {
+        this.torus = torus;
+    }
+
+    public boolean isDirValid(Direction dir) {
+        Point nextPoint = getNextPoint(dir);
+        if (nextPoint.equals(getHead()) || nextPoint.equals(body.get(size - 2))) {
+            return false;
+        }
+        return true;
+    }
+
     public void setDir(Direction dir) {
-        if (dir.getDx() + direction.getDx() == 0 && dir.getDy() + direction.getDy() == 0) {
-            throw new InputMismatchException("cannot reverse direction 180 degrees");
+        if (!isDirValid(dir)) {
+            throw new IllegalArgumentException("Invalid direction");
         }
         direction = dir;
     }
 
     public Point getNextPoint() {
-        Point head = getHead();
-        int x = head.getX() + direction.getDx();
-        int y = head.getY() + direction.getDy();
-        return new Point(x,y);
+        return getNextPoint(direction);
     }
 
-    public void move(boolean extend) {
+    private Point getNextPoint(Direction dir) {
+        Point head = getHead();
+        int x = head.getX() + dir.getDx();
+        int y = head.getY() + dir.getDy();
+        Point nexPoint = new Point(x, y);
+        torus.restrictPoint(nexPoint);
+        return nexPoint;
+    }
+
+    public void extend() {
+        move(true);
+    }
+
+    public void move() {
+        move(false);
+    }
+
+    private void move(boolean extend) {
         body.add(getNextPoint());
         if (extend) {
             size++;
