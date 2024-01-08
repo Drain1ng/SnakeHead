@@ -83,14 +83,6 @@ public class Torus {
         return food;
     }
 
-    public int getN() {
-        return n;
-    }
-
-    public int getM() {
-        return m;
-    }
-
     public Snake getSnake() {
         return snake;
     }
