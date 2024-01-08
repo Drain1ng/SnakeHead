@@ -147,9 +147,9 @@ public class View extends Application {
     public void setDims() {
         Rectangle2D screenBounds = Screen.getPrimary().getBounds();
         int maxWidth = (int) screenBounds.getWidth();
-        int maxHeight = (int) (screenBounds.getHeight() - screenBounds.getHeight() / 10);
+        int maxHeight = (int) (screenBounds.getHeight() - screenBounds.getHeight() / 15);
         int max = n < m ? m : n;
-        blocksSize = maxHeight / max;
+        blocksSize = (maxHeight < maxWidth ? maxHeight : maxWidth) / max;
         width = m * blocksSize;
         height = n * blocksSize;
         while (width + m <= maxWidth && height + n <= maxHeight) {
