@@ -2,29 +2,15 @@
 //javac -classpath . *.java
 //java View.java n m
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
-import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ContentDisplay;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseButton;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
-import javafx.scene.text.TextFlow;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
@@ -147,7 +133,7 @@ public class View extends Application {
     public void setDims() {
         Rectangle2D screenBounds = Screen.getPrimary().getBounds();
         int maxWidth = (int) screenBounds.getWidth();
-        int maxHeight = (int) (screenBounds.getHeight() - screenBounds.getHeight() / 15);
+        int maxHeight = (int) (screenBounds.getHeight() - screenBounds.getHeight() / 10);
         int max = n < m ? m : n;
         blocksSize = (maxHeight < maxWidth ? maxHeight : maxWidth) / max;
         width = m * blocksSize;
