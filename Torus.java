@@ -5,7 +5,7 @@ public class Torus {
     private int m;
     private Object[][] state;
     private Snake snake;
-    private Point food = new Point(0,0);
+    private Point food;
     private boolean isSnakeAlive;
 
     public Torus(int n, int m) {
@@ -21,6 +21,7 @@ public class Torus {
         }
         this.snake = snake;
         isSnakeAlive = true;
+        food = new Point(0,0);
         spawnFood();
     }
 
@@ -74,7 +75,7 @@ public class Torus {
         do {
             food.setX(random.nextInt(m));
             food.setY(random.nextInt(n));
-        } while (getCell(food) == null);
+        } while (getCell(food) != null);
         setCell(food,food);
     }
 
