@@ -72,14 +72,12 @@ public class Torus {
     }
 
     public void spawnFood() {
-        //https://codereview.stackexchange.com/questions/151800/snake-in-javafx
         Random random = new Random();
-        Point food;
         do {
-            food = new Point(random.nextInt(m), random.nextInt(n));
-        } while (snake.isInBody(food));
+            food.setX(random.nextInt(m));
+            food.setY(random.nextInt(n));
+        } while (getCell(food) == null);
         setCell(food,food);
-        this.food = food;
     }
 
     public Point getFood() {
