@@ -121,15 +121,6 @@ public class View extends Application {
         scoreEnd.setTextAlignment(TextAlignment.CENTER);
     }
 
-
-    public ImageView getImageView(String pathString) {
-        Image img = new Image(pathString);
-        ImageView imgV = new ImageView(img);
-        imgV.setFitHeight(height);
-        imgV.setFitWidth(width);
-        return imgV;
-    }
-
     public void setDims() {
         Rectangle2D screenBounds = Screen.getPrimary().getBounds();
         int maxWidth = (int) screenBounds.getWidth();
