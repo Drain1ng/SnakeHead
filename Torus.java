@@ -1,13 +1,11 @@
 import java.util.Random;
 
-import javax.swing.plaf.synth.SynthUI;
-
 public class Torus {
     private int n;
     private int m;
     private Object[][] state;
     private Snake snake;
-    private Point food;
+    private Point food = new Point(0,0);
     private boolean isSnakeAlive;
 
     public Torus(int n, int m) {
