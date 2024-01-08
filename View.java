@@ -96,7 +96,7 @@ public class View extends Application {
         List<Point> body = game.getBody();
         Point food = game.getFood();
         for (Point snake: body) {
-            if(body.get(body.size()-1) == snake) {
+            if(game.getSnakeHead() == snake) {
                 gcSnake.setFill(javafx.scene.paint.Color.GREEN);
                 gcSnake.fillRect(snake.getX() * blocksSize, snake.getY() * blocksSize, blocksSize, blocksSize);
             } else {
