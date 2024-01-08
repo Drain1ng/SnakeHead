@@ -14,7 +14,6 @@ public class Controller {
     public void handleKeyPress(KeyEvent event) {
         try {
             switch (event.getCode()) {
-                //er syntaks korrekt her?
                 case UP, W: game.setDir(Direction.UP); break;
                 case DOWN, S: game.setDir(Direction.DOWN); break;
                 case LEFT, A: game.setDir(Direction.LEFT); break;
@@ -31,7 +30,7 @@ public class Controller {
                 view.message(false);
             }
         } catch (InputMismatchException e) {
-            // hvis der kommer en InputMismatchException (i.e. retningskiftet ikke er muligt), så gør intet
+            // do nothing in case of invalid direction
         }
     }
 }

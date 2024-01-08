@@ -36,11 +36,11 @@ public class View extends Application {
         launch(args);
     }
 
+    //https://openjfx.io/javadoc/17/javafx.graphics/javafx/application/Application.html#getParameters()
+    //https://stackoverflow.com/questions/24611789/how-to-pass-parameters-to-javafx-application
+    //https://docs.oracle.com/javase/8/javafx/api/javafx/application/Application.Parameters.html#getRaw--
+    //https://docs.oracle.com/javase/8/javafx/api/javafx/application/Application.Parameters.html
     public void init() {
-        //https://openjfx.io/javadoc/17/javafx.graphics/javafx/application/Application.html#getParameters()
-        //https://stackoverflow.com/questions/24611789/how-to-pass-parameters-to-javafx-application
-        //https://docs.oracle.com/javase/8/javafx/api/javafx/application/Application.Parameters.html#getRaw--
-        //https://docs.oracle.com/javase/8/javafx/api/javafx/application/Application.Parameters.html
         List<String> args = getParameters().getRaw();
         if (args.size() != 2) {
                 throw new IllegalArgumentException("Must be 2 arguments");
@@ -92,8 +92,8 @@ public class View extends Application {
 
     }
 
+    //clear Canvas https://stackoverflow.com/questions/27203671/javafx-how-to-clear-the-canvas
     public void updateSnake() {
-        //clear Canvas https://stackoverflow.com/questions/27203671/javafx-how-to-clear-the-canvas
         gcSnake.clearRect(0, 0, gc.getCanvas().getWidth(), gc.getCanvas().getHeight());
         List<Point> body = game.getBody();
         Point food = game.getFood();
@@ -150,7 +150,7 @@ public class View extends Application {
     }
 
     public Canvas[] drawGame() {
-        Canvas canvas = new Canvas(width, height); //canvastørrelse angives
+        Canvas canvas = new Canvas(width, height);
         gc = canvas.getGraphicsContext2D();
         Canvas background = new Canvas(width, height);
         gcBack = background.getGraphicsContext2D();
