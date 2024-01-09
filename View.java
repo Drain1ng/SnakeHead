@@ -98,6 +98,7 @@ public class View extends Application {
         updateSnake(0);
         primaryStage.setTitle("Snake");
         primaryStage.setScene(gameScene);
+        centerPrimaryStage();
         control.startGame();
     }
 
@@ -139,8 +140,6 @@ public class View extends Application {
         sceneMENU.getEndText().setText(message);
         primaryStage.setTitle("Endgame");
         primaryStage.setScene(sceneMENU.getEndScene());
-        centerPrimaryStage();
-        primaryStage.show();
     }
 
     public void drawGrid() {
