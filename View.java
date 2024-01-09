@@ -55,7 +55,7 @@ public class View extends Application {
     private ImageView headV, appleV;
     private SnapshotParameters parameters;
     private Stage primaryStage;
-  
+
     public static void main(String[] args) {
         launch(args);
     }
@@ -149,6 +149,7 @@ public class View extends Application {
 
         game = new Game(n, m);
         control = new Controller(game, this);
+        initiateSound();
         Canvas[] board = drawGame();
         StackPane root1 = new StackPane();
         root1.getChildren().addAll(board[0], board[1], board[2]);
