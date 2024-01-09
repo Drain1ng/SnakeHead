@@ -86,6 +86,31 @@ public class Controller {
         }
 
     }
+    //STARTMENU BUTTONS
+    public void showGamediffBTN(ActionEvent event) {
+        view.showGameDiff();
+    }
+
+    public void showSettingsBTN(ActionEvent event) {
+        view.showSettings();
+    }
+
+    public void showLeaderBoardBTN(ActionEvent event) {
+        //showLeaderBoard();
+    }
+    //GAMEDIFFICULTY BUTTONS
+    public void startNormalGame(ActionEvent event) {
+        view.playGame();
+    }
+
+    //BACKBUTTONS
+    public void mainmenuscreen(ActionEvent event) {
+        view.showStartMenu();
+    }
+
+
+
+
 
 
     /*

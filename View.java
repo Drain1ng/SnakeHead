@@ -57,6 +57,7 @@ public class View extends Application {
     private ImageView headV, appleV;
     private SnapshotParameters parameters;
     private Stage primaryStage;
+    private Initiatescenes sceneMENU;
 
     public static void main(String[] args) {
         launch(args);
@@ -83,50 +84,30 @@ public class View extends Application {
 
     public void start(Stage primaryStage) {
         this.primaryStage = primaryStage;
+        game = new Game(n, m);
+        control = new Controller(game, this);
+        sceneMENU = new Initiatescenes();
+        initiateButtons();
         showStartMenu();
     }
 
+    public void initiateButtons() {
+        sceneMENU.getGameDiffBTN().setOnAction(control::showGamediffBTN);
+        sceneMENU.getSettingsMenuBTN().setOnAction(control::showSettingsBTN);
+        sceneMENU.getLeaderboardBTN().setOnAction(control::showLeaderBoardBTN);
+        sceneMENU.normalGameBTN().setOnAction(control::startNormalGame);
+        sceneMENU.gameDiffMenuBackBTN().setOnAction(control::mainmenuscreen);
+        sceneMENU.settingsMenuBackBTN().setOnAction(control::mainmenuscreen);
+    }
+
     public void showStartMenu() {
-        BorderPane menu = new BorderPane();
-        Button newGame = new Button("New Game");
-        newGame.setMinWidth(200);
-        newGame.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                showGameDiff();
-            }
-        });
-
-        Button settings = new Button("Settings");
-        settings.setMinWidth(200);
-
-        settings.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                showSettings();
-            }
-        });
-        Button highScores = new Button("High Scores");
-        highScores.setMinWidth(200);
-        highScores.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                //showLeaderBoard();
-            }
-        });
-        VBox mainbtns = new VBox(newGame, settings, highScores);
-        mainbtns.setAlignment(Pos.CENTER);
-        mainbtns.setSpacing(5);
-        menu.setCenter(mainbtns);
-        Scene scene = new Scene(menu, 600, 300);
         primaryStage.setTitle("Snake");
-        primaryStage.setScene(scene);
+        primaryStage.setScene(sceneMENU.getMenu());
         primaryStage.show();
+        
     }
 
     public void playGame() {
-        game = new Game(n, m);
-        control = new Controller(game, this);
         Canvas[] board = drawGame();
         StackPane root1 = new StackPane();
         root1.getChildren().addAll(board[0], board[1], board[2]);
@@ -142,94 +123,15 @@ public class View extends Application {
     }
 
     public void showGameDiff() {
-
-        BorderPane root = new BorderPane();
-        Button easy = new Button("Easy - Haha, NOOB");
-        easy.setMinWidth(300);
-        Button normal = new Button("Normal");
-        normal.setMinWidth(300);
-        normal.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                playGame();
-            }
-        });
-        Button hard = new Button("When I spot Chris, my pena is ____");
-        hard.setMinWidth(300);
-        Button extreme = new Button("Extreme");
-        extreme.setMinWidth(300);
-
-        Image back = new Image("BackButton.jpg");
-        ImageView view = new ImageView(back);
-        view.setFitHeight(20);
-        view.setFitWidth(20);
-        Button backBtn = new Button();
-        backBtn.setPrefSize(20, 20);
-        backBtn.setGraphic(view);
-
-        backBtn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                showStartMenu();
-            }
-        });
-
-        VBox difficulties = new VBox(easy, normal, hard, extreme);
-        difficulties.setAlignment(Pos.CENTER);
-        difficulties.setSpacing(5);
-        root.setCenter(difficulties);
-        root.setTop(backBtn);
-        Scene gameDiffs = new Scene(root, 600, 300);
         primaryStage.setTitle("Difficulties");
-        primaryStage.setScene(gameDiffs);
+        primaryStage.setScene(sceneMENU.getNewGame());
         primaryStage.show();
     }
 
 
     public void showSettings() {
-
-        Label heightCaption = new Label("Board Height");
-        Slider height = new Slider(5, 100, 5);
-        height.setShowTickMarks(true);
-        height.setShowTickLabels(true);
-        height.setMajorTickUnit(5);
-        height.setBlockIncrement(10);
-        height.snapToTicksProperty();
-        Label heightValue = new Label(Double.toString(height.getValue()));
-
-        Label widthCaption = new Label("Board Width");
-        Slider width = new Slider(5, 100, 5);
-        width.setShowTickMarks(true);
-        width.setShowTickLabels(true);
-        width.setMajorTickUnit(5);
-        Label widthValue = new Label(Double.toString((width.getValue())));
-
-        CheckBox music = new CheckBox("Music");
-        CheckBox soundEffects = new CheckBox("Sound Effects");
-
-        Image back = new Image("BackButton.jpg");
-        ImageView view = new ImageView(back);
-        view.setFitHeight(20);
-        view.setFitWidth(20);
-        Button backBtn = new Button();
-        backBtn.setPrefSize(20, 20);
-        backBtn.setGraphic(view);
-
-        backBtn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                showStartMenu();
-            }
-        });
-
-        BorderPane root = new BorderPane();
-        VBox gameSettings = new VBox(height, width, music, soundEffects);
-        gameSettings.setAlignment(Pos.CENTER);
-        root.setTop(backBtn);
-        root.setCenter(gameSettings);
-        Scene settings = new Scene(root, 600, 300);
         primaryStage.setTitle("Settings");
-        primaryStage.setScene(settings);
+        primaryStage.setScene(sceneMENU.getSettings());
         primaryStage.show();
     }
 
