@@ -1,5 +1,6 @@
 import java.util.InputMismatchException;
 
+import javafx.event.ActionEvent;
 import javafx.scene.input.KeyEvent;
 
 public class Controller {
@@ -29,4 +30,12 @@ public class Controller {
             view.message(false);
         }
     }
+
+    /* 
+    public void newGameBtnHandle(ActionEvent event) {
+        System.out.println(3);
+        view.showGameDiff();
+    }
+    */
+    
 }
