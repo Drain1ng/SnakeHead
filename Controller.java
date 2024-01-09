@@ -41,11 +41,11 @@ public class Controller {
         game.update();
         view.updateScore();
         if (game.isWon()) {
-            view.message(true);
+            view.showEndGame(true);
         } else if(!game.isLost()) {
             view.updateSnake(getDirectionDegrees());
         } else {
-            view.message(false);
+            view.showEndGame(false);
         }
     }
 
@@ -86,6 +86,13 @@ public class Controller {
         }
 
     }
+    //Restart game
+    public void restart(ActionEvent event) {
+        timeline.stop();
+        game.restartGame();
+        view.playGame();
+    }
+
     //STARTMENU BUTTONS
     public void showGamediffBTN(ActionEvent event) {
         view.showGameDiff();

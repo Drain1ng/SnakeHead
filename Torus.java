@@ -83,6 +83,14 @@ public class Torus {
         return state;
     }
 
+    public int getN() {
+        return n;
+    }
+
+     public int getM() {
+        return m;
+    }
+
     public String toString() {
         String str = "";
         for(int i = 0; i < n; i++) {

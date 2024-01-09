@@ -50,7 +50,7 @@ public class View extends Application {
     private GraphicsContext gcSnake;
     private Controller control;
     private Game game;
-    private Text score, scoreEnd;
+    private Text score;
     private BorderPane root2;
     private int n,m;
     private Image head, apple;
@@ -58,6 +58,8 @@ public class View extends Application {
     private SnapshotParameters parameters;
     private Stage primaryStage;
     private Initiatescenes sceneMENU;
+    private StackPane root1;
+    private Scene gameScene;
 
     public static void main(String[] args) {
         launch(args);
@@ -88,7 +90,35 @@ public class View extends Application {
         control = new Controller(game, this);
         sceneMENU = new Initiatescenes();
         initiateButtons();
+        initiateGameStart();
         showStartMenu();
+    }
+
+    public void playGame() {
+        updateSnake(0);
+        primaryStage.setTitle("Snake");
+        centerPrimaryStage();
+        primaryStage.setScene(gameScene);
+        centerPrimaryStage();
+        control.startGame();
+    }
+
+    
+    public void showStartMenu() {
+        primaryStage.setTitle("Snake");
+        primaryStage.setScene(sceneMENU.getMenu());
+        primaryStage.show();
+    }
+
+    public void showGameDiff() {
+        primaryStage.setTitle("Difficulties");
+        primaryStage.setScene(sceneMENU.getNewGame());
+    }
+
+
+    public void showSettings() {
+        primaryStage.setTitle("Settings");
+        primaryStage.setScene(sceneMENU.getSettings());
     }
 
     public void initiateButtons() {
@@ -98,41 +128,7 @@ public class View extends Application {
         sceneMENU.normalGameBTN().setOnAction(control::startNormalGame);
         sceneMENU.gameDiffMenuBackBTN().setOnAction(control::mainmenuscreen);
         sceneMENU.settingsMenuBackBTN().setOnAction(control::mainmenuscreen);
-    }
-
-    public void showStartMenu() {
-        primaryStage.setTitle("Snake");
-        primaryStage.setScene(sceneMENU.getMenu());
-        primaryStage.show();
-        
-    }
-
-    public void playGame() {
-        Canvas[] board = drawGame();
-        StackPane root1 = new StackPane();
-        root1.getChildren().addAll(board[0], board[1], board[2]);
-        root2 = new BorderPane();
-        initiateText();
-        Scene scene = new Scene(new StackPane(root1, root2));
-        primaryStage.setTitle("Snake");
-        scene.setOnKeyPressed(control::handleKeyPress);
-        primaryStage.setScene(scene);
-        centerPrimaryStage();
-        primaryStage.show();
-        control.startGame();
-    }
-
-    public void showGameDiff() {
-        primaryStage.setTitle("Difficulties");
-        primaryStage.setScene(sceneMENU.getNewGame());
-        primaryStage.show();
-    }
-
-
-    public void showSettings() {
-        primaryStage.setTitle("Settings");
-        primaryStage.setScene(sceneMENU.getSettings());
-        primaryStage.show();
+        sceneMENU.getRetryBTN().setOnAction(control::restart);
     }
 
 
@@ -140,12 +136,13 @@ public class View extends Application {
         score.setText("  Score: " + game.getScore());
     }
 
-    public void message(boolean win) {
-        String message = win ? "GOOD JOB" : "YOU LOSE";
-        gc.setFill(javafx.scene.paint.Color.RED);
-        gc.fillRect(0, 0, gc.getCanvas().getWidth(), gc.getCanvas().getHeight());
-        scoreEnd.setText(message + "\nScore: " + game.getScore());
-        score.setText("");
+    public void showEndGame(boolean win) {
+        String message = (win ? "GAME WON" : "GAME LOST") + "\n Score: " + game.getScore() ;
+        sceneMENU.getEndText().setText(message);
+        primaryStage.setTitle("Endgame");
+        primaryStage.setScene(sceneMENU.getEndScene());
+        centerPrimaryStage();
+        primaryStage.show();
     }
 
     public void drawGrid() {
@@ -177,13 +174,9 @@ public class View extends Application {
 
     public void initiateText() {
         score = new Text("  Score: " + 0);
-        scoreEnd = new Text("");
         root2.setTop(score);
-        root2.setCenter(scoreEnd);
         score.setFont(new Font("Ariel", 32));
         score.setFill(Color.GREEN);
-        scoreEnd.setFont(new Font("Ariel", 32));
-        scoreEnd.setTextAlignment(TextAlignment.CENTER);
     }
 
 
@@ -227,17 +220,20 @@ public class View extends Application {
         drawGrid();
     }
 
-    public Canvas[] drawGame() {
+    public void initiateGameStart() {
         Canvas canvas = new Canvas(width, height);
         gc = canvas.getGraphicsContext2D();
         Canvas background = new Canvas(width, height);
         gcBack = background.getGraphicsContext2D();
         Canvas snake = new Canvas(width, height);
         gcSnake = snake.getGraphicsContext2D();
-        initiatePicture();
+        root1 = new StackPane();
         drawBackground();
-        updateSnake(0);
-        Canvas[] board = {background, snake, canvas};
-        return board;
+        initiatePicture();
+        root1.getChildren().addAll(background, snake, canvas);
+        root2 = new BorderPane();
+        initiateText();
+        gameScene = new Scene(new StackPane(root1, root2));
+        gameScene.setOnKeyPressed(control::handleKeyPress);
     }
 }

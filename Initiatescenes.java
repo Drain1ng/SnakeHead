@@ -41,19 +41,30 @@ import javafx.util.Duration;
 public class Initiatescenes {
     private Scene gameDiffs;
     private Scene settings;
-    private Scene mainmenu ;
+    private Scene mainmenu;
+    private Scene endGame;
     public Button gameDiffMenu;
     public Button settingsMenuBTN;
     public Button leaderboardBTN;
     public Button startNormalBTN;
     public Button gameDiffMenuBackBTN;
     public Button settingsMenuBackBTN;
-
+    public Text endText;
+    public Button retryBTN;
 
     public Initiatescenes() {
         initiateStartmenu();
         initiateNewGame();
         initiateSettings();
+        initiateEndGame();
+    }
+
+    public Text getEndText() {
+        return endText;
+    }
+
+    public Button getRetryBTN() {
+        return retryBTN;
     }
 
     public Button getGameDiffBTN() {
@@ -92,7 +103,11 @@ public class Initiatescenes {
         return settings;
     }
 
-    //Make Scenes
+    public Scene getEndScene() {
+        return endGame;
+    }
+
+    // Make Scenes
     public void initiateStartmenu() {
         BorderPane menu = new BorderPane();
         gameDiffMenu = new Button("New Game");
@@ -110,16 +125,16 @@ public class Initiatescenes {
 
     public void initiateNewGame() {
         BorderPane root = new BorderPane();
-        //Not finished button(EASY)
+        // Not finished button(EASY)
         Button easy = new Button("Easy - Haha, NOOB");
         easy.setMinWidth(300);
         //
         startNormalBTN = new Button("Normal");
         startNormalBTN.setMinWidth(300);
-        //Not finished button(HARD)
+        // Not finished button(HARD)
         Button hard = new Button("When I spot Chris, my pena is ____");
         hard.setMinWidth(300);
-        //Not finished button(EXTREME)
+        // Not finished button(EXTREME)
         Button extreme = new Button("Extreme");
         extreme.setMinWidth(300);
 
@@ -174,5 +189,16 @@ public class Initiatescenes {
         settings = new Scene(root, 600, 300);
     }
 
+    public void initiateEndGame() {
+        VBox gameoverBox = new VBox();
+        endText = new Text("");
+        retryBTN = new Button("Play again");
+        gameoverBox.getChildren().addAll(endText, retryBTN);
+        gameoverBox.setAlignment(Pos.CENTER);
+        endText.setTextAlignment(TextAlignment.CENTER);
+        endText.setFont(new Font("STENCIL", 50));
+        endGame = new Scene(gameoverBox, 600, 300);
+
+    }
 
 }
