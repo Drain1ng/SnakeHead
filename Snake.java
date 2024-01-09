@@ -104,5 +104,4 @@ public class Snake {
     public int getSize() {
         return size;
     }
-
 }

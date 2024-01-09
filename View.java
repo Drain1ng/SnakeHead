@@ -7,6 +7,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
+import javafx.scene.SnapshotParameters;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -19,18 +20,21 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.transform.Rotate;
+import java.io.File;
+import javafx.scene.media.*;
+import java.util.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-
 import java.io.PipedReader;
 import java.util.*;
-
 import javax.swing.Action;
-
 import javafx.stage.Screen;
 
 public class View extends Application {
@@ -45,8 +49,13 @@ public class View extends Application {
     private Text score, scoreEnd;
     private BorderPane root2;
     private int scoreCount;
-    private int n = 5, m = 5;
+    private int n,m;
+    private AudioClip eatSFX, dieSFX;
+    private Image head, apple;
+    private ImageView headV, appleV;
+    private SnapshotParameters parameters;
     private Stage primaryStage;
+  
     public static void main(String[] args) {
         launch(args);
     }
@@ -55,8 +64,6 @@ public class View extends Application {
     //https://stackoverflow.com/questions/24611789/how-to-pass-parameters-to-javafx-application
     //https://docs.oracle.com/javase/8/javafx/api/javafx/application/Application.Parameters.html#getRaw--
     //https://docs.oracle.com/javase/8/javafx/api/javafx/application/Application.Parameters.html
-
-
     public void init() {
         List<String> args = getParameters().getRaw();
         if (args.size() != 2) {
@@ -87,6 +94,7 @@ public class View extends Application {
         root1.getChildren().addAll(board[0], board[1], board[2]);
         root2 = new BorderPane();
         initiateText();
+        initiateSound();
         Scene scene = new Scene(new StackPane(root1, root2));
 
         primaryStage.setTitle("Snake");
@@ -103,12 +111,6 @@ public class View extends Application {
         BorderPane menu = new BorderPane();
         Button newGame = new Button("New Game");
         newGame.setMinWidth(200);
-
-        /*
-        System.out.println(1);
-        newGame.setOnAction(control::newGameBtnHandle);
-        System.out.println(2);
-        */
         newGame.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -141,8 +143,6 @@ public class View extends Application {
         primaryStage.setTitle("Snake");
         primaryStage.setScene(scene);
         primaryStage.show();
-        //return scene;
-
     }
 
     public void playGame() {
@@ -205,7 +205,6 @@ public class View extends Application {
         primaryStage.setTitle("Difficulties");
         primaryStage.setScene(gameDiffs);
         primaryStage.show();
-        //return gameDiffs;
     }
 
 
@@ -254,18 +253,22 @@ public class View extends Application {
         primaryStage.setTitle("Settings");
         primaryStage.setScene(settings);
         primaryStage.show();
-        //return settings;
-
     }
 
 
     public void updateScore(int snakeLength) {
+        if(snakeLength > scoreCount) {
+            eatSFX.play();
+        }
         scoreCount = snakeLength;
         score.setText("  Score: " + scoreCount);
     }
 
     public void message(boolean win) {
         String message = win ? "GOOD JOB" : "YOU LOSE";
+        if(!win) {
+            dieSFX.play();
+        }
         gc.setFill(javafx.scene.paint.Color.RED);
         gc.fillRect(0, 0, gc.getCanvas().getWidth(), gc.getCanvas().getHeight());
         scoreEnd.setText(message + "\nScore: " + scoreCount);
@@ -284,21 +287,20 @@ public class View extends Application {
     }
 
     //clear Canvas https://stackoverflow.com/questions/27203671/javafx-how-to-clear-the-canvas
-    public void updateSnake() {
+    public void updateSnake(int deg) {
         gcSnake.clearRect(0, 0, gc.getCanvas().getWidth(), gc.getCanvas().getHeight());
         List<Point> body = game.getBody();
         Point food = game.getFood();
-        for (Point snake: body) {
+        for (Point snake : body) {
             if(game.getSnakeHead() == snake) {
-                gcSnake.setFill(javafx.scene.paint.Color.GREEN);
-                gcSnake.fillRect(snake.getX() * blocksSize, snake.getY() * blocksSize, blocksSize, blocksSize);
+                gcSnake.drawImage(rotateImage(deg), snake.getX() * blocksSize, snake.getY() * blocksSize, blocksSize, blocksSize);
             } else {
-                gcSnake.setFill(javafx.scene.paint.Color.LIGHTGREEN);
-                gcSnake.fillRect(snake.getX() * blocksSize, snake.getY() * blocksSize, blocksSize, blocksSize);
+                gcSnake.setFill(Color.rgb(0, 119, 0)); //samme value som slange
+                gcSnake.fillRoundRect(snake.getX() * blocksSize + 0.05 * blocksSize, snake.getY() * blocksSize + 0.05 * blocksSize, blocksSize * 0.9, blocksSize* 0.90, blocksSize * 0.5, blocksSize * 0.5);
+                System.out.println(blocksSize);
             }
         }
-        gcSnake.setFill(javafx.scene.paint.Color.ORANGE);
-        gcSnake.fillRect(food.getX() * blocksSize, food.getY() * blocksSize, blocksSize, blocksSize);
+        gcSnake.drawImage(apple, food.getX() * blocksSize, food.getY() * blocksSize, blocksSize, blocksSize);
     }
 
     public void initiateText() {
@@ -310,6 +312,26 @@ public class View extends Application {
         score.setFill(Color.GREEN);
         scoreEnd.setFont(new Font("Ariel", 32));
         scoreEnd.setTextAlignment(TextAlignment.CENTER);
+    }
+
+    public void initiateSound() {
+        String eatSound = new File("Eat.wav").toURI().toString();
+        eatSFX = new AudioClip(eatSound);
+        String deathSound = new File("Death.wav").toURI().toString();
+        dieSFX = new AudioClip(deathSound);
+    }
+
+    public void initiatePicture() {
+        parameters = new SnapshotParameters();
+        head = new Image("Head.jpg");
+        headV = new ImageView(head);
+        apple = new Image("Apple.jpg");
+    }
+
+    public Image rotateImage(int deg) {
+        headV.setRotate(deg);
+        parameters.setFill(Color.TRANSPARENT);
+        return headV.snapshot(parameters, null);
     }
 
     public void setDims() {
@@ -346,8 +368,9 @@ public class View extends Application {
         gcBack = background.getGraphicsContext2D();
         Canvas snake = new Canvas(width, height);
         gcSnake = snake.getGraphicsContext2D();
+        initiatePicture();
         drawBackground();
-        updateSnake();
+        updateSnake(0);
         Canvas[] board = {background, snake, canvas};
         return board;
     }
