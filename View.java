@@ -97,9 +97,7 @@ public class View extends Application {
     public void playGame() {
         updateSnake(0);
         primaryStage.setTitle("Snake");
-        centerPrimaryStage();
         primaryStage.setScene(gameScene);
-        centerPrimaryStage();
         control.startGame();
     }
 
@@ -178,7 +176,6 @@ public class View extends Application {
         score.setFont(new Font("Ariel", 32));
         score.setFill(Color.GREEN);
     }
-
 
     public void initiatePicture() {
         parameters = new SnapshotParameters();

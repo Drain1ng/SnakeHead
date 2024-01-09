@@ -41,10 +41,12 @@ public class Controller {
         game.update();
         view.updateScore();
         if (game.isWon()) {
+            timeline.stop();
             view.showEndGame(true);
         } else if(!game.isLost()) {
             view.updateSnake(getDirectionDegrees());
         } else {
+            timeline.stop();
             view.showEndGame(false);
         }
     }
@@ -88,7 +90,6 @@ public class Controller {
     }
     //Restart game
     public void restart(ActionEvent event) {
-        timeline.stop();
         game.restartGame();
         view.playGame();
     }
