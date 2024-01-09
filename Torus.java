@@ -15,8 +15,7 @@ public class Torus {
         int x = m/2, y = n/2;
         Point tail = new Point(x + 1,y);
         Point head = new Point(x,y);
-        Snake snake = new Snake(tail, head);
-        snake.setTorus(this);
+        Snake snake = new Snake(tail, head, this);
         for (Point p : snake.getBody()) {
             setCell(p, snake);
         }
@@ -26,7 +25,7 @@ public class Torus {
         spawnFood();
     }
 
-    public void move() {
+    public void update() {
         Point nextPoint = snake.getNextPoint();
         Object cell = getCell(nextPoint);
         if (cell == null || nextPoint.equals(snake.getTail())) {

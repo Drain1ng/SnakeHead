@@ -5,17 +5,19 @@ public class Snake {
     private ArrayList<Point> body;
     private int size;
     private Torus torus;
+    private Point validNextPoint;
 
-    public Snake(Point tail, Point head) {
+    public Snake(Point tail, Point head, Torus torus) {
         body = new ArrayList<Point>();
         body.add(tail);
         body.add(head);
         direction = Direction.LEFT;
-        size = 2;
+        size = body.size();
+        this.torus = torus;
     }
 
-    public void setTorus(Torus torus) {
-        this.torus = torus;
+    public Snake(Point tail, Point head) {
+        this(tail,head,null);
     }
 
     public boolean isDirValid(Direction dir) {
@@ -23,6 +25,7 @@ public class Snake {
         if (nextPoint.equals(getHead()) || nextPoint.equals(body.get(size - 2))) {
             return false;
         }
+        validNextPoint = nextPoint;
         return true;
     }
 
@@ -31,6 +34,12 @@ public class Snake {
             throw new IllegalArgumentException("Invalid direction");
         }
         direction = dir;
+    }
+
+    public void setDirIfValid(Direction dir) {
+        if (dir != direction && isDirValid(dir)) {
+            direction = dir;
+        }
     }
 
     public Point getNextPoint() {
@@ -42,7 +51,9 @@ public class Snake {
         int x = head.getX() + dir.getDx();
         int y = head.getY() + dir.getDy();
         Point nexPoint = new Point(x, y);
-        torus.restrictPoint(nexPoint);
+        if (torus != null) {
+            torus.restrictPoint(nexPoint);
+        }
         return nexPoint;
     }
 
@@ -55,7 +66,13 @@ public class Snake {
     }
 
     private void move(boolean extend) {
-        body.add(getNextPoint());
+        if (validNextPoint == null) {
+            body.add(getNextPoint());
+        } else {
+            body.add(validNextPoint);
+            validNextPoint = null;
+        }
+
         if (extend) {
             size++;
         } else {
@@ -67,9 +84,6 @@ public class Snake {
         return body;
     }
 
-    public Point setHead(Point newHead) {
-        return body.set(size - 1, newHead);
-    }
 
     public Point getHead() {
         return body.get(size - 1);
