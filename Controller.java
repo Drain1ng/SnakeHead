@@ -1,5 +1,6 @@
 import java.util.InputMismatchException;
 
+import javafx.event.ActionEvent;
 import javafx.scene.input.KeyEvent;
 
 public class Controller {
@@ -33,4 +34,12 @@ public class Controller {
             // do nothing in case of invalid direction
         }
     }
+
+    /* 
+    public void newGameBtnHandle(ActionEvent event) {
+        System.out.println(3);
+        view.showGameDiff();
+    }
+    */
+    
 }

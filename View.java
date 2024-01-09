@@ -2,10 +2,16 @@
 //javac -classpath . *.java
 //java View.java n m
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
+import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
@@ -13,7 +19,18 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.Slider;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+
+import java.io.PipedReader;
 import java.util.*;
+
+import javax.swing.Action;
+
 import javafx.stage.Screen;
 
 public class View extends Application {
@@ -28,8 +45,8 @@ public class View extends Application {
     private Text score, scoreEnd;
     private BorderPane root2;
     private int scoreCount;
-    private int n,m;
-
+    private int n = 5, m = 5;
+    private Stage primaryStage;
     public static void main(String[] args) {
         launch(args);
     }
@@ -38,6 +55,8 @@ public class View extends Application {
     //https://stackoverflow.com/questions/24611789/how-to-pass-parameters-to-javafx-application
     //https://docs.oracle.com/javase/8/javafx/api/javafx/application/Application.Parameters.html#getRaw--
     //https://docs.oracle.com/javase/8/javafx/api/javafx/application/Application.Parameters.html
+    
+    
     public void init() {
         List<String> args = getParameters().getRaw();
         if (args.size() != 2) {
@@ -50,8 +69,17 @@ public class View extends Application {
         }
         setDims();
     }
+    
+    
 
     public void start(Stage primaryStage) {
+        this.primaryStage = primaryStage;
+        
+        showStartMenu();
+        //showGameDiff(primaryStage);
+
+        //playGame(primaryStage);
+        /*
         game = new Game(n, m);
         control = new Controller(game, this);
         Canvas[] board = drawGame();
@@ -60,11 +88,177 @@ public class View extends Application {
         root2 = new BorderPane();
         initiateText();
         Scene scene = new Scene(new StackPane(root1, root2));
+        
         primaryStage.setTitle("Snake");
         scene.setOnKeyPressed(control::handleKeyPress);
         primaryStage.setScene(scene);
         primaryStage.show();
+        */
+
+        
+
     }
+
+    public void showStartMenu() {
+        BorderPane menu = new BorderPane();
+        Button newGame = new Button("New Game");
+        newGame.setMinWidth(200);
+
+        /*
+        System.out.println(1);
+        newGame.setOnAction(control::newGameBtnHandle);
+        System.out.println(2);
+        */
+        newGame.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                showGameDiff();
+            }
+        });
+
+        Button settings = new Button("Settings");
+        settings.setMinWidth(200);
+
+        settings.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                showSettings();
+            }
+        });
+        Button highScores = new Button("High Scores");
+        highScores.setMinWidth(200);
+        highScores.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                //showLeaderBoard();
+            }
+        });
+        VBox mainbtns = new VBox(newGame, settings, highScores);
+        mainbtns.setAlignment(Pos.CENTER);
+        mainbtns.setSpacing(5);
+        menu.setCenter(mainbtns);
+        Scene scene = new Scene(menu, 600, 300);
+        primaryStage.setTitle("Snake");
+        primaryStage.setScene(scene);
+        primaryStage.show();
+        //return scene;
+
+    }
+
+    public void playGame() {
+
+        game = new Game(n, m);
+        control = new Controller(game, this);
+        Canvas[] board = drawGame();
+        StackPane root1 = new StackPane();
+        root1.getChildren().addAll(board[0], board[1], board[2]);
+        root2 = new BorderPane();
+        initiateText();
+        Scene scene = new Scene(new StackPane(root1, root2));
+        
+        primaryStage.setTitle("Snake");
+        scene.setOnKeyPressed(control::handleKeyPress);
+        primaryStage.setScene(scene);
+        primaryStage.show();
+
+        //return scene;
+
+    }
+    public void showGameDiff() {
+        
+        BorderPane root = new BorderPane();
+        Button easy = new Button("Easy - Haha, NOOB");
+        easy.setMinWidth(300);
+        Button normal = new Button("Normal");
+        normal.setMinWidth(300);
+        normal.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                playGame();
+            }
+        });
+        Button hard = new Button("When I spot Chris, my pena is ____");
+        hard.setMinWidth(300);
+        Button extreme = new Button("Extreme");
+        extreme.setMinWidth(300);
+
+        Image back = new Image("BackButton.jpg");
+        ImageView view = new ImageView(back);
+        view.setFitHeight(20);
+        view.setFitWidth(20);
+        Button backBtn = new Button();
+        backBtn.setPrefSize(20, 20);
+        backBtn.setGraphic(view);
+        
+        backBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                showStartMenu();
+            }
+        });
+
+        VBox difficulties = new VBox(easy, normal, hard, extreme);
+        difficulties.setAlignment(Pos.CENTER);
+        difficulties.setSpacing(5);
+        root.setCenter(difficulties);
+        root.setTop(backBtn);
+        Scene gameDiffs = new Scene(root, 600, 300);
+        primaryStage.setTitle("Difficulties");
+        primaryStage.setScene(gameDiffs);
+        primaryStage.show();
+        //return gameDiffs;
+    }
+
+    
+    public void showSettings() {
+
+        Label heightCaption = new Label("Board Height");
+        Slider height = new Slider(5, 100, 5);
+        height.setShowTickMarks(true);
+        height.setShowTickLabels(true);
+        height.setMajorTickUnit(5);
+        height.setBlockIncrement(10);
+        height.snapToTicksProperty();
+        Label heightValue = new Label(Double.toString(height.getValue()));
+
+        Label widthCaption = new Label("Board Width");
+        Slider width = new Slider(5, 100, 5);
+        width.setShowTickMarks(true);
+        width.setShowTickLabels(true);
+        width.setMajorTickUnit(5);
+        Label widthValue = new Label(Double.toString((width.getValue())));
+
+        CheckBox music = new CheckBox("Music");
+        CheckBox soundEffects = new CheckBox("Sound Effects");
+        
+        Image back = new Image("BackButton.jpg");
+        ImageView view = new ImageView(back);
+        view.setFitHeight(20);
+        view.setFitWidth(20);
+        Button backBtn = new Button();
+        backBtn.setPrefSize(20, 20);
+        backBtn.setGraphic(view);
+        
+        backBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                showStartMenu();
+            }
+        });
+
+        BorderPane root = new BorderPane();
+        VBox gameSettings = new VBox(height, width, music, soundEffects);
+        gameSettings.setAlignment(Pos.CENTER);
+        root.setTop(backBtn);
+        root.setCenter(gameSettings);
+        Scene settings = new Scene(root, 600, 300);
+        primaryStage.setTitle("Settings");
+        primaryStage.setScene(settings);
+        primaryStage.show();
+        //return settings;
+         
+    }
+    
 
     public void updateScore(int snakeLength) {
         scoreCount = snakeLength;
