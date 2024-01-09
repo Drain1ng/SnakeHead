@@ -55,8 +55,8 @@ public class View extends Application {
     //https://stackoverflow.com/questions/24611789/how-to-pass-parameters-to-javafx-application
     //https://docs.oracle.com/javase/8/javafx/api/javafx/application/Application.Parameters.html#getRaw--
     //https://docs.oracle.com/javase/8/javafx/api/javafx/application/Application.Parameters.html
-    
-    
+
+
     public void init() {
         List<String> args = getParameters().getRaw();
         if (args.size() != 2) {
@@ -69,12 +69,12 @@ public class View extends Application {
         }
         setDims();
     }
-    
-    
+
+
 
     public void start(Stage primaryStage) {
         this.primaryStage = primaryStage;
-        
+
         showStartMenu();
         //showGameDiff(primaryStage);
 
@@ -88,14 +88,14 @@ public class View extends Application {
         root2 = new BorderPane();
         initiateText();
         Scene scene = new Scene(new StackPane(root1, root2));
-        
+
         primaryStage.setTitle("Snake");
         scene.setOnKeyPressed(control::handleKeyPress);
         primaryStage.setScene(scene);
         primaryStage.show();
         */
 
-        
+
 
     }
 
@@ -155,17 +155,16 @@ public class View extends Application {
         root2 = new BorderPane();
         initiateText();
         Scene scene = new Scene(new StackPane(root1, root2));
-        
+
         primaryStage.setTitle("Snake");
         scene.setOnKeyPressed(control::handleKeyPress);
         primaryStage.setScene(scene);
+        centerPrimaryStage();
         primaryStage.show();
-
-        //return scene;
-
     }
+
     public void showGameDiff() {
-        
+
         BorderPane root = new BorderPane();
         Button easy = new Button("Easy - Haha, NOOB");
         easy.setMinWidth(300);
@@ -189,7 +188,7 @@ public class View extends Application {
         Button backBtn = new Button();
         backBtn.setPrefSize(20, 20);
         backBtn.setGraphic(view);
-        
+
         backBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -209,7 +208,7 @@ public class View extends Application {
         //return gameDiffs;
     }
 
-    
+
     public void showSettings() {
 
         Label heightCaption = new Label("Board Height");
@@ -230,7 +229,7 @@ public class View extends Application {
 
         CheckBox music = new CheckBox("Music");
         CheckBox soundEffects = new CheckBox("Sound Effects");
-        
+
         Image back = new Image("BackButton.jpg");
         ImageView view = new ImageView(back);
         view.setFitHeight(20);
@@ -238,7 +237,7 @@ public class View extends Application {
         Button backBtn = new Button();
         backBtn.setPrefSize(20, 20);
         backBtn.setGraphic(view);
-        
+
         backBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -256,9 +255,9 @@ public class View extends Application {
         primaryStage.setScene(settings);
         primaryStage.show();
         //return settings;
-         
+
     }
-    
+
 
     public void updateScore(int snakeLength) {
         scoreCount = snakeLength;
@@ -326,6 +325,12 @@ public class View extends Application {
             width += m;
             height += n;
         }
+    }
+
+    public void centerPrimaryStage() {
+        Rectangle2D screenBounds = Screen.getPrimary().getBounds();
+        primaryStage.setX((screenBounds.getWidth() - width) / 2);
+        primaryStage.setY((screenBounds.getHeight() - height * 1.1) / 2);
     }
 
     public void drawBackground() {
