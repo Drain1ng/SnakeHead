@@ -8,7 +8,7 @@ public class Game {
     }
 
     public void update() {
-        map.move();
+        map.update();
     }
 
     public Object[][] getState() {
@@ -19,15 +19,19 @@ public class Game {
         map.getSnake().setDir(newDir);
     }
 
-    public boolean isGameOver() {
+    public void setDirIfValid(Direction newDir) {
+        map.getSnake().setDirIfValid(newDir);
+    }
+
+    public boolean isLost() {
         return !map.isSnakeAlive();
     }
 
     public int getScore() {
-        return map.getSnake().getBody().size() - 2; //bruger snakelength til at vurdere score
+        return map.getSnake().getBody().size() - 2;
     }
 
-    public boolean isGameWon() {
+    public boolean isWon() {
         return map.getSnake().getSize() == map.getSize();
     }
 
@@ -46,5 +50,4 @@ public class Game {
     public Point getFood() {
         return map.getFood();
     }
-
 }

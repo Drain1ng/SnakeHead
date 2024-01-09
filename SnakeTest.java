@@ -16,7 +16,7 @@ public class SnakeTest {
         Snake snake = new Snake(p1, p2);
         System.out.println(snake);
         for (int i = 0; i < 5; i++) {
-            snake.move(false);
+            snake.move();
             System.out.println(snake);
         }
 
