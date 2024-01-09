@@ -48,9 +48,7 @@ public class View extends Application {
     private Game game;
     private Text score, scoreEnd;
     private BorderPane root2;
-    private int scoreCount;
     private int n,m;
-    private AudioClip eatSFX, dieSFX;
     private Image head, apple;
     private ImageView headV, appleV;
     private SnapshotParameters parameters;
@@ -81,30 +79,7 @@ public class View extends Application {
 
     public void start(Stage primaryStage) {
         this.primaryStage = primaryStage;
-
         showStartMenu();
-        //showGameDiff(primaryStage);
-
-        //playGame(primaryStage);
-        /*
-        game = new Game(n, m);
-        control = new Controller(game, this);
-        Canvas[] board = drawGame();
-        StackPane root1 = new StackPane();
-        root1.getChildren().addAll(board[0], board[1], board[2]);
-        root2 = new BorderPane();
-        initiateText();
-        initiateSound();
-        Scene scene = new Scene(new StackPane(root1, root2));
-
-        primaryStage.setTitle("Snake");
-        scene.setOnKeyPressed(control::handleKeyPress);
-        primaryStage.setScene(scene);
-        primaryStage.show();
-        */
-
-
-
     }
 
     public void showStartMenu() {
@@ -149,7 +124,6 @@ public class View extends Application {
 
         game = new Game(n, m);
         control = new Controller(game, this);
-        initiateSound();
         Canvas[] board = drawGame();
         StackPane root1 = new StackPane();
         root1.getChildren().addAll(board[0], board[1], board[2]);
@@ -257,22 +231,15 @@ public class View extends Application {
     }
 
 
-    public void updateScore(int snakeLength) {
-        if(snakeLength > scoreCount) {
-            eatSFX.play();
-        }
-        scoreCount = snakeLength;
-        score.setText("  Score: " + scoreCount);
+    public void updateScore() {
+        score.setText("  Score: " + game.getScore());
     }
 
     public void message(boolean win) {
         String message = win ? "GOOD JOB" : "YOU LOSE";
-        if(!win) {
-            dieSFX.play();
-        }
         gc.setFill(javafx.scene.paint.Color.RED);
         gc.fillRect(0, 0, gc.getCanvas().getWidth(), gc.getCanvas().getHeight());
-        scoreEnd.setText(message + "\nScore: " + scoreCount);
+        scoreEnd.setText(message + "\nScore: " + game.getScore());
         score.setText("");
     }
 
@@ -296,9 +263,8 @@ public class View extends Application {
             if(game.getSnakeHead() == snake) {
                 gcSnake.drawImage(rotateImage(deg), snake.getX() * blocksSize, snake.getY() * blocksSize, blocksSize, blocksSize);
             } else {
-                gcSnake.setFill(Color.rgb(0, 119, 0)); //samme value som slange
+                gcSnake.setFill(Color.rgb(0, 119, 0)); //samme value som slange billede
                 gcSnake.fillRoundRect(snake.getX() * blocksSize + 0.05 * blocksSize, snake.getY() * blocksSize + 0.05 * blocksSize, blocksSize * 0.9, blocksSize* 0.90, blocksSize * 0.5, blocksSize * 0.5);
-                System.out.println(blocksSize);
             }
         }
         gcSnake.drawImage(apple, food.getX() * blocksSize, food.getY() * blocksSize, blocksSize, blocksSize);
@@ -315,12 +281,6 @@ public class View extends Application {
         scoreEnd.setTextAlignment(TextAlignment.CENTER);
     }
 
-    public void initiateSound() {
-        String eatSound = new File("Eat.wav").toURI().toString();
-        eatSFX = new AudioClip(eatSound);
-        String deathSound = new File("Death.wav").toURI().toString();
-        dieSFX = new AudioClip(deathSound);
-    }
 
     public void initiatePicture() {
         parameters = new SnapshotParameters();

@@ -34,7 +34,7 @@ public class Controller {
                 default: return;
             }
             game.update();
-            view.updateScore(game.getScore());
+            view.updateScore();
             if (game.isWon()) {
                 view.message(true);
             } else if(!game.isLost()) {
