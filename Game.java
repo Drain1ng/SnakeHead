@@ -46,5 +46,4 @@ public class Game {
     public Point getFood() {
         return map.getFood();
     }
-
 }

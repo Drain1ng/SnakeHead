@@ -12,12 +12,24 @@ public class Controller {
     }
 
     public void handleKeyPress(KeyEvent event) {
+        int deg = 0;
         try {
             switch (event.getCode()) {
-                case UP, W: game.setDir(Direction.UP); break;
-                case DOWN, S: game.setDir(Direction.DOWN); break;
-                case LEFT, A: game.setDir(Direction.LEFT); break;
-                case RIGHT, D: game.setDir(Direction.RIGHT); break;
+                case UP, W: 
+                    game.setDir(Direction.UP);
+                    deg = 90;
+                    break;
+                case DOWN, S: 
+                    game.setDir(Direction.DOWN);
+                    deg = 270;
+                    break;
+                case LEFT, A: 
+                    game.setDir(Direction.LEFT); 
+                    break;
+                case RIGHT, D: 
+                    game.setDir(Direction.RIGHT);
+                    deg = 180; 
+                    break;
                 default: return;
             }
             game.update();
@@ -25,7 +37,7 @@ public class Controller {
             if (game.isGameWon()) {
                 view.message(true);
             } else if(!game.isGameOver()) {
-                view.updateSnake();
+                view.updateSnake(deg);
             } else {
                 view.message(false);
             }
