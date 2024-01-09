@@ -93,6 +93,10 @@ public class Snake {
         return body.get(0);
     }
 
+    public Direction getDirection() {
+        return direction;
+    }
+
     public String toString() {
         String str = "";
         for (Point point : body) {

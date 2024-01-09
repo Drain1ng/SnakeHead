@@ -47,6 +47,9 @@ public class Game {
         return map.getSnake().getBody();
     }
 
+    public Direction getDirection() {
+        return map.getSnake().getDirection();
+    }
     public Point getFood() {
         return map.getFood();
     }

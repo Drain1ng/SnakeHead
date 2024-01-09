@@ -1,6 +1,9 @@
 //run the following 2 commands to play:
 //javac -classpath . *.java
 //java View.java n m
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -36,6 +39,7 @@ import java.io.PipedReader;
 import java.util.*;
 import javax.swing.Action;
 import javafx.stage.Screen;
+import javafx.util.Duration;
 
 public class View extends Application {
     private int width;
@@ -121,7 +125,6 @@ public class View extends Application {
     }
 
     public void playGame() {
-
         game = new Game(n, m);
         control = new Controller(game, this);
         Canvas[] board = drawGame();
@@ -130,12 +133,12 @@ public class View extends Application {
         root2 = new BorderPane();
         initiateText();
         Scene scene = new Scene(new StackPane(root1, root2));
-
         primaryStage.setTitle("Snake");
         scene.setOnKeyPressed(control::handleKeyPress);
         primaryStage.setScene(scene);
         centerPrimaryStage();
         primaryStage.show();
+        control.startGame();
     }
 
     public void showGameDiff() {
