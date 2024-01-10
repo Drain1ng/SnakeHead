@@ -101,7 +101,12 @@ public class Controller {
     }
     //Restart game
     public void restart(ActionEvent event) {
+        restart();
+    }
+
+    public void restart() {
         game.restartGame();
+        lastScore = game.getScore();
         view.playGame();
     }
 
@@ -120,26 +125,22 @@ public class Controller {
     //GAMEDIFFICULTY BUTTONS. Only extreme scales to board size
     public void startEasyGame(ActionEvent event) {
         this.loopInterval = 0.7;
-        game.restartGame();
-        view.playGame();
+        restart();
     }
 
     public void startNormalGame(ActionEvent event) {
         this.loopInterval = 0.4;
-        game.restartGame();
-        view.playGame();
+        restart();
     }
 
     public void startHardGame(ActionEvent event) {
         this.loopInterval = 0.25;
-        game.restartGame();
-        view.playGame();
+        restart();
     }
 
     public void startExtremeGame(ActionEvent event) {
         this.loopInterval = 0.25 / ((double) Math.sqrt(game.getBoardSize()) / 5);
-        game.restartGame();
-        view.playGame();
+        restart();
     }
 
 
