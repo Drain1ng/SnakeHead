@@ -51,6 +51,7 @@ public class Initiatescenes {
     private Button startNormalBTN;
     private Button gameDiffMenuBackBTN;
     private Button settingsMenuBackBTN;
+    private Button endGameBackBTN;
     private Text endText;
     private Button retryBTN;
     private Slider nSlider;
@@ -94,6 +95,10 @@ public class Initiatescenes {
 
     public Button settingsMenuBackBTN() {
         return settingsMenuBackBTN;
+    }
+
+    public Button endGameBackBTN() {
+        return endGameBackBTN;
     }
 
     public Scene getMenu() {
@@ -230,9 +235,13 @@ public class Initiatescenes {
 
     public void initiateEndGame() {
         VBox gameoverBox = new VBox();
+        gameoverBox.setSpacing(10);
         endText = new Text("");
         retryBTN = new Button("Play again");
-        gameoverBox.getChildren().addAll(endText, retryBTN);
+        endGameBackBTN = new Button("Back To Main Menu");
+        retryBTN.setMinWidth(150);
+        endGameBackBTN.setMinWidth(150);
+        gameoverBox.getChildren().addAll(endText, retryBTN, endGameBackBTN);
         gameoverBox.setAlignment(Pos.CENTER);
         endText.setTextAlignment(TextAlignment.CENTER);
         endText.setFont(new Font("STENCIL", 50));

@@ -127,6 +127,7 @@ public class View extends Application {
         sceneMENU.normalGameBTN().setOnAction(control::startNormalGame);
         sceneMENU.gameDiffMenuBackBTN().setOnAction(control::mainmenuscreen);
         sceneMENU.settingsMenuBackBTN().setOnAction(control::mainmenuscreen);
+        sceneMENU.endGameBackBTN().setOnAction(control::mainmenuscreen);
         sceneMENU.getRetryBTN().setOnAction(control::restart);
     }
 
