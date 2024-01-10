@@ -97,6 +97,7 @@ public class View extends Application {
     }
 
     public void playGame() {
+        updateScore();
         updateSnake(0);
         primaryStage.setTitle("Snake");
         primaryStage.setScene(gameScene);
@@ -193,7 +194,7 @@ public class View extends Application {
         parameters = new SnapshotParameters();
         head = new Image("Head.jpg");
         headV = new ImageView(head);
-        apple = new Image("Apple.jpg");
+        apple = new Image("Apple.png");
     }
 
     public void initiateSound() {
