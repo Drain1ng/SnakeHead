@@ -15,9 +15,10 @@ public class Controller {
     private double loopInterval;
     private boolean isPaused;
     private Timeline timeline;
+    private int lastScore;
 
     public void startGame() {
-        timeline = new Timeline(new KeyFrame(Duration.seconds(0.25), this::updateGame));
+        timeline = new Timeline(new KeyFrame(Duration.seconds(loopInterval), this::updateGame));
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.playFromStart();
         isPaused = false;
@@ -40,12 +41,18 @@ public class Controller {
     public void updateGame(Event event) {
         game.update();
         view.updateScore();
+        int score = game.getScore();
+        if (lastScore != score) {
+            lastScore = score;
+            view.playEatSFX();
+        }
         if (game.isWon()) {
             endGame(true);
         } else if(!game.isLost()) {
             view.updateSnake(getDirectionDegrees());
         } else {
             endGame(false);
+            view.playDieSFX();
         }
     }
 
@@ -110,10 +117,28 @@ public class Controller {
     public void showLeaderBoardBTN(ActionEvent event) {
         view.showLeaderBoard();
     }
-    //GAMEDIFFICULTY BUTTONS
-    public void startNormalGame(ActionEvent event) {
+    //GAMEDIFFICULTY BUTTONS. Only extreme scales to board size
+    public void startEasyGame(ActionEvent event) {
+        this.loopInterval = 0.7;
         view.playGame();
     }
+
+    public void startNormalGame(ActionEvent event) {
+        this.loopInterval = 0.4;
+        view.playGame();
+    }
+
+    public void startHardGame(ActionEvent event) {
+        this.loopInterval = 0.25;
+        view.playGame();
+    }
+
+    public void startExtremeGame(ActionEvent event) {
+        this.loopInterval = 0.25 / ((double) Math.sqrt(game.getBoardSize()) / 5);
+        view.playGame();
+    }
+
+
 
     //BACKBUTTONS
     public void mainmenuscreen(ActionEvent event) {

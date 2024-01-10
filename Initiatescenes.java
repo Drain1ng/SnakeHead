@@ -49,7 +49,10 @@ public class Initiatescenes {
     private Button gameDiffMenu;
     private Button settingsMenuBTN;
     private Button leaderboardBTN;
+    private Button startEasyBTN;
     private Button startNormalBTN;
+    private Button startHardBTN;
+    private Button startExtremeBTN;
     private Button gameDiffMenuBackBTN;
     private Button settingsMenuBackBTN;
     private Button endGameBackBTN;
@@ -91,8 +94,20 @@ public class Initiatescenes {
         return leaderboardBTN;
     }
 
-    public Button normalGameBTN() {
+    public Button getStartNormalBTN() {
         return startNormalBTN;
+    }
+
+    public Button getStartEasyBTN() {
+        return startEasyBTN;
+    }
+
+    public Button getStartHardBTN() {
+        return startHardBTN;
+    }
+
+    public Button getStartExtremeBTN() {
+        return startExtremeBTN;
     }
 
     public Button gameDiffMenuBackBTN() {
@@ -158,17 +173,17 @@ public class Initiatescenes {
     public void initiateNewGame() {
         BorderPane root = new BorderPane();
         // Not finished button(EASY)
-        Button easy = new Button("Easy - Haha, NOOB");
-        easy.setMinWidth(300);
+        startEasyBTN = new Button("Easy - Haha, NOOB");
+        startEasyBTN.setMinWidth(300);
         //
         startNormalBTN = new Button("Normal");
         startNormalBTN.setMinWidth(300);
         // Not finished button(HARD)
-        Button hard = new Button("When I spot Chris, my pena is ____");
-        hard.setMinWidth(300);
+        startHardBTN = new Button("When I spot Chris, my pena is ____");
+        startHardBTN.setMinWidth(300);
         // Not finished button(EXTREME)
-        Button extreme = new Button("Extreme");
-        extreme.setMinWidth(300);
+        startExtremeBTN = new Button("Extreme");
+        startExtremeBTN.setMinWidth(300);
 
         Image back = new Image("BackButton.jpg");
         ImageView view = new ImageView(back);
@@ -178,7 +193,7 @@ public class Initiatescenes {
         gameDiffMenuBackBTN.setPrefSize(20, 20);
         gameDiffMenuBackBTN.setGraphic(view);
 
-        VBox difficulties = new VBox(easy, startNormalBTN, hard, extreme);
+        VBox difficulties = new VBox(startEasyBTN, startNormalBTN, startHardBTN, startExtremeBTN);
         difficulties.setAlignment(Pos.CENTER);
         difficulties.setSpacing(5);
         root.setTop(gameDiffMenuBackBTN);

@@ -60,6 +60,7 @@ public class View extends Application {
     private Initiatescenes sceneMENU;
     private StackPane root1;
     private Scene gameScene;
+    private AudioClip eatSFX, dieSFX;
 
     public static void main(String[] args) {
         launch(args);
@@ -89,6 +90,7 @@ public class View extends Application {
         game = new Game(n, m);
         control = new Controller(game, this);
         sceneMENU = new Initiatescenes(game);
+        initiateSound();
         initiateButtons();
         initiateGameStart();
         showStartMenu();
@@ -114,7 +116,6 @@ public class View extends Application {
         primaryStage.setScene(sceneMENU.getNewGame());
     }
 
-
     public void showSettings() {
         primaryStage.setTitle("Settings");
         primaryStage.setScene(sceneMENU.getSettings());
@@ -129,7 +130,10 @@ public class View extends Application {
         sceneMENU.getGameDiffBTN().setOnAction(control::showGamediffBTN);
         sceneMENU.getSettingsMenuBTN().setOnAction(control::showSettingsBTN);
         sceneMENU.getLeaderboardBTN().setOnAction(control::showLeaderBoardBTN);
-        sceneMENU.normalGameBTN().setOnAction(control::startNormalGame);
+        sceneMENU.getStartNormalBTN().setOnAction(control::startNormalGame);
+        sceneMENU.getStartEasyBTN().setOnAction(control::startEasyGame);
+        sceneMENU.getStartHardBTN().setOnAction(control::startHardGame);
+        sceneMENU.getStartExtremeBTN().setOnAction(control::startExtremeGame);
         sceneMENU.gameDiffMenuBackBTN().setOnAction(control::mainmenuscreen);
         sceneMENU.settingsMenuBackBTN().setOnAction(control::mainmenuscreen);
         sceneMENU.endGameBackBTN().setOnAction(control::mainmenuscreen);
@@ -190,6 +194,21 @@ public class View extends Application {
         head = new Image("Head.jpg");
         headV = new ImageView(head);
         apple = new Image("Apple.jpg");
+    }
+
+    public void initiateSound() {
+        String eatSound = new File("Eat.wav").toURI().toString();
+        eatSFX = new AudioClip(eatSound);
+        String deathSound = new File("Death.wav").toURI().toString();
+        dieSFX = new AudioClip(deathSound);
+    }
+
+    public void playEatSFX() {
+        eatSFX.play();
+    }
+
+    public void playDieSFX() {
+        dieSFX.play();
     }
 
     public Image rotateImage(int deg) {

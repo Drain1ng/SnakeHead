@@ -71,4 +71,8 @@ public class Game {
     public ArrayList<Integer> getLeaderBoardScores() {
         return highScores.getLeaderBoard();
     }
+
+    public int getBoardSize() {
+        return map.getSize();
+    }
 }
