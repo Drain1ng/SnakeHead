@@ -2,6 +2,8 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -158,18 +160,44 @@ public class Initiatescenes {
         Label heightCaption = new Label("Board Height");
         Slider height = new Slider(5, 100, 5);
         height.setShowTickMarks(true);
-        height.setShowTickLabels(true);
         height.setMajorTickUnit(5);
-        height.setBlockIncrement(10);
-        height.snapToTicksProperty();
-        Label heightValue = new Label(Double.toString(height.getValue()));
+        height.setBlockIncrement(1);
+        height.setSnapToTicks(true);
+        height.setMaxWidth(300);
+        Label heightValue = new Label(Integer.toString(5));
+        height.valueProperty().addListener(new ChangeListener<Number>() {
+
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                heightValue.setText(Integer.toString((int)height.getValue()));
+            }
+            
+        });
+
+        HBox heightHBox = new HBox(heightCaption, height, heightValue);
+        heightHBox.setAlignment(Pos.CENTER);
+        heightHBox.setSpacing(20);
 
         Label widthCaption = new Label("Board Width");
         Slider width = new Slider(5, 100, 5);
         width.setShowTickMarks(true);
-        width.setShowTickLabels(true);
         width.setMajorTickUnit(5);
-        Label widthValue = new Label(Double.toString((width.getValue())));
+        width.setBlockIncrement(1);
+        width.setSnapToTicks(true);
+        width.setMaxWidth(300);
+        Label widthValue = new Label(Integer.toString(5));
+        width.valueProperty().addListener(new ChangeListener<Number>() {
+
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                widthValue.setText(Integer.toString((int)width.getValue()));
+            }
+            
+        });
+
+        HBox widthHBox = new HBox(widthCaption, width, widthValue);
+        widthHBox.setAlignment(Pos.CENTER);
+        widthHBox.setSpacing(20);
 
         CheckBox music = new CheckBox("Music");
         CheckBox soundEffects = new CheckBox("Sound Effects");
@@ -182,7 +210,7 @@ public class Initiatescenes {
         settingsMenuBackBTN.setPrefSize(20, 20);
         settingsMenuBackBTN.setGraphic(view);
         BorderPane root = new BorderPane();
-        VBox gameSettings = new VBox(height, width, music, soundEffects);
+        VBox gameSettings = new VBox(heightHBox, widthHBox, music, soundEffects);
         gameSettings.setAlignment(Pos.CENTER);
         root.setTop(settingsMenuBackBTN);
         root.setCenter(gameSettings);
