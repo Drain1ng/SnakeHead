@@ -45,6 +45,7 @@ public class Initiatescenes {
     private Scene settings;
     private Scene mainmenu;
     private Scene endGame;
+    private Scene leaderboard;
     private Button gameDiffMenu;
     private Button settingsMenuBTN;
     private Button leaderboardBTN;
@@ -52,17 +53,22 @@ public class Initiatescenes {
     private Button gameDiffMenuBackBTN;
     private Button settingsMenuBackBTN;
     private Button endGameBackBTN;
+    private Button leaderboardBackBTN;
     private Text endText;
+    private Text scoresText;
     private Button retryBTN;
     private Slider nSlider;
     private Slider mSlider;
+    private Game game;
 
 
-    public Initiatescenes() {
+    public Initiatescenes(Game game) {
+        this.game = game;
         initiateStartmenu();
         initiateNewGame();
         initiateSettings();
         initiateEndGame();
+        initiateLeaderBoard();
     }
 
     public Text getEndText() {
@@ -123,6 +129,14 @@ public class Initiatescenes {
 
     public double getUserM() {
         return mSlider.getValue();
+    }
+
+    public Scene getLeaderboard() {
+        return leaderboard;
+    }
+
+    public Button getLeaderboardBackButton() {
+        return leaderboardBackBTN;
     }
 
     // Make Scenes
@@ -246,7 +260,29 @@ public class Initiatescenes {
         endText.setTextAlignment(TextAlignment.CENTER);
         endText.setFont(new Font("STENCIL", 50));
         endGame = new Scene(gameoverBox, 600, 300);
+    }
 
+    public void initiateLeaderBoard() {
+        scoresText = new Text("");
+        updateScoresText();
+        Image back = new Image("BackButton.jpg");
+        ImageView imgView = new ImageView(back);
+        imgView.setFitHeight(20);
+        imgView.setFitWidth(20);
+        leaderboardBackBTN = new Button();
+        BorderPane root = new BorderPane(scoresText);
+        root.setTop(leaderboardBackBTN);
+        leaderboardBackBTN.setPrefSize(20, 20);
+        leaderboardBackBTN.setGraphic(imgView);
+        leaderboard = new Scene(root, 600, 300);
+    }
+
+    public void updateScoresText() {
+        String str = "HIGH SCORES:";
+        for (int i : game.getLeaderBoardScores()) {
+            str += "\n" + i;
+        }
+        scoresText.setText(str);
     }
 
 }

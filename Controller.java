@@ -23,7 +23,7 @@ public class Controller {
         isPaused = false;
     }
 
-    public void pause() {
+    public void togglePause() {
         if (isPaused) {
             timeline.play();
         } else {
@@ -41,14 +41,18 @@ public class Controller {
         game.update();
         view.updateScore();
         if (game.isWon()) {
-            timeline.stop();
-            view.showEndGame(true);
+            endGame(true);
         } else if(!game.isLost()) {
             view.updateSnake(getDirectionDegrees());
         } else {
-            timeline.stop();
-            view.showEndGame(false);
+            endGame(false);
         }
+    }
+
+    public void endGame(boolean win) {
+        timeline.stop();
+        game.updateLeaderBoard(game.getScore());
+        view.showEndGame(win);
     }
 
     public int getDirectionDegrees() {
@@ -68,7 +72,7 @@ public class Controller {
 
     public void handleKeyPress(KeyEvent event) {
         if (event.getCode() == KeyCode.ESCAPE) {
-            pause();
+            togglePause();
         }
         if (!isPaused) {
             switch (event.getCode()) {
@@ -104,7 +108,7 @@ public class Controller {
     }
 
     public void showLeaderBoardBTN(ActionEvent event) {
-        //showLeaderBoard();
+        view.showLeaderBoard();
     }
     //GAMEDIFFICULTY BUTTONS
     public void startNormalGame(ActionEvent event) {

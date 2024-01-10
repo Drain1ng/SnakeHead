@@ -2,9 +2,11 @@ import java.util.ArrayList;
 
 public class Game {
     private Torus map;
+    private HighScores highScores;
 
     public Game(int n, int m) {
         map = new Torus(n,m);
+        highScores = new HighScores();
     }
 
     public void restartGame(int n, int m) {
@@ -60,5 +62,13 @@ public class Game {
     }
     public Point getFood() {
         return map.getFood();
+    }
+
+    public void updateLeaderBoard(int newScore) {
+        highScores.updateLeaderBoard(newScore);
+    }
+
+    public ArrayList<Integer> getLeaderBoardScores() {
+        return highScores.getLeaderBoard();
     }
 }

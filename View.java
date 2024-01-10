@@ -88,7 +88,7 @@ public class View extends Application {
         this.primaryStage = primaryStage;
         game = new Game(n, m);
         control = new Controller(game, this);
-        sceneMENU = new Initiatescenes();
+        sceneMENU = new Initiatescenes(game);
         initiateButtons();
         initiateGameStart();
         showStartMenu();
@@ -120,6 +120,11 @@ public class View extends Application {
         primaryStage.setScene(sceneMENU.getSettings());
     }
 
+    public void showLeaderBoard() {
+        sceneMENU.updateScoresText();
+        primaryStage.setScene(sceneMENU.getLeaderboard());
+    }
+
     public void initiateButtons() {
         sceneMENU.getGameDiffBTN().setOnAction(control::showGamediffBTN);
         sceneMENU.getSettingsMenuBTN().setOnAction(control::showSettingsBTN);
@@ -129,7 +134,9 @@ public class View extends Application {
         sceneMENU.settingsMenuBackBTN().setOnAction(control::mainmenuscreen);
         sceneMENU.endGameBackBTN().setOnAction(control::mainmenuscreen);
         sceneMENU.getRetryBTN().setOnAction(control::restart);
+        sceneMENU.getLeaderboardBackButton().setOnAction(control::mainmenuscreen);
     }
+
 
 
     public void updateScore() {
