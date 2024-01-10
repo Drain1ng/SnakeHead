@@ -45,14 +45,17 @@ public class Initiatescenes {
     private Scene settings;
     private Scene mainmenu;
     private Scene endGame;
-    public Button gameDiffMenu;
-    public Button settingsMenuBTN;
-    public Button leaderboardBTN;
-    public Button startNormalBTN;
-    public Button gameDiffMenuBackBTN;
-    public Button settingsMenuBackBTN;
-    public Text endText;
-    public Button retryBTN;
+    private Button gameDiffMenu;
+    private Button settingsMenuBTN;
+    private Button leaderboardBTN;
+    private Button startNormalBTN;
+    private Button gameDiffMenuBackBTN;
+    private Button settingsMenuBackBTN;
+    private Text endText;
+    private Button retryBTN;
+    private Slider nSlider;
+    private Slider mSlider;
+
 
     public Initiatescenes() {
         initiateStartmenu();
@@ -109,6 +112,14 @@ public class Initiatescenes {
         return endGame;
     }
 
+    public double getUserN() {
+        return nSlider.getValue();
+    }
+
+    public double getUserM() {
+        return mSlider.getValue();
+    }
+
     // Make Scenes
     public void initiateStartmenu() {
         BorderPane menu = new BorderPane();
@@ -158,44 +169,44 @@ public class Initiatescenes {
 
     public void initiateSettings() {
         Label heightCaption = new Label("Board Height");
-        Slider height = new Slider(5, 100, 5);
-        height.setShowTickMarks(true);
-        height.setMajorTickUnit(5);
-        height.setBlockIncrement(1);
-        height.setSnapToTicks(true);
-        height.setMaxWidth(300);
+        nSlider = new Slider(5, 100, 5);
+        nSlider.setShowTickMarks(true);
+        nSlider.setMajorTickUnit(5);
+        nSlider.setBlockIncrement(1);
+        nSlider.setSnapToTicks(true);
+        nSlider.setMaxWidth(300);
         Label heightValue = new Label(Integer.toString(5));
-        height.valueProperty().addListener(new ChangeListener<Number>() {
+        nSlider.valueProperty().addListener(new ChangeListener<Number>() {
 
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                heightValue.setText(Integer.toString((int)height.getValue()));
+                heightValue.setText(Integer.toString((int)nSlider.getValue()));
             }
-            
+
         });
 
-        HBox heightHBox = new HBox(heightCaption, height, heightValue);
+        HBox heightHBox = new HBox(heightCaption, nSlider, heightValue);
         heightHBox.setAlignment(Pos.CENTER);
         heightHBox.setSpacing(20);
 
         Label widthCaption = new Label("Board Width");
-        Slider width = new Slider(5, 100, 5);
-        width.setShowTickMarks(true);
-        width.setMajorTickUnit(5);
-        width.setBlockIncrement(1);
-        width.setSnapToTicks(true);
-        width.setMaxWidth(300);
+        mSlider = new Slider(5, 100, 5);
+        mSlider.setShowTickMarks(true);
+        mSlider.setMajorTickUnit(5);
+        mSlider.setBlockIncrement(1);
+        mSlider.setSnapToTicks(true);
+        mSlider.setMaxWidth(300);
         Label widthValue = new Label(Integer.toString(5));
-        width.valueProperty().addListener(new ChangeListener<Number>() {
+        mSlider.valueProperty().addListener(new ChangeListener<Number>() {
 
             @Override
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                widthValue.setText(Integer.toString((int)width.getValue()));
+                widthValue.setText(Integer.toString((int)mSlider.getValue()));
             }
-            
+
         });
 
-        HBox widthHBox = new HBox(widthCaption, width, widthValue);
+        HBox widthHBox = new HBox(widthCaption, mSlider, widthValue);
         widthHBox.setAlignment(Pos.CENTER);
         widthHBox.setSpacing(20);
 

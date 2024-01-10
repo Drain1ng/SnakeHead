@@ -98,11 +98,11 @@ public class View extends Application {
         updateSnake(0);
         primaryStage.setTitle("Snake");
         primaryStage.setScene(gameScene);
-        centerPrimaryStage();
+        centerGame();
         control.startGame();
     }
 
-    
+
     public void showStartMenu() {
         primaryStage.setTitle("Snake");
         primaryStage.setScene(sceneMENU.getMenu());
@@ -139,6 +139,7 @@ public class View extends Application {
         String message = (win ? "GAME WON" : "GAME LOST") + "\n Score: " + game.getScore() ;
         sceneMENU.getEndText().setText(message);
         primaryStage.setTitle("Endgame");
+        centerPrimaryStage(300, 600);
         primaryStage.setScene(sceneMENU.getEndScene());
     }
 
@@ -204,7 +205,11 @@ public class View extends Application {
         }
     }
 
-    public void centerPrimaryStage() {
+    public void centerGame() {
+        centerPrimaryStage(this.height,this.width);
+    }
+
+    public void centerPrimaryStage(int height, int width) {
         Rectangle2D screenBounds = Screen.getPrimary().getBounds();
         primaryStage.setX((screenBounds.getWidth() - width) / 2);
         primaryStage.setY((screenBounds.getHeight() - height * 1.1) / 2);
@@ -232,4 +237,30 @@ public class View extends Application {
         gameScene = new Scene(new StackPane(root1, root2));
         gameScene.setOnKeyPressed(control::handleKeyPress);
     }
+
+    public double getUserM() {
+        return sceneMENU.getUserM();
+    }
+
+    public double getUserN() {
+        return sceneMENU.getUserN();
+    }
+
+    public int getN() {
+        return n;
+    }
+
+    public int getM() {
+        return m;
+    }
+
+    public void setN(int newN) {
+        n = newN;
+    }
+
+    public void setM(int newM) {
+        m = newM;
+    }
+
+
 }

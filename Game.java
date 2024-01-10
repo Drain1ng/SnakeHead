@@ -7,8 +7,12 @@ public class Game {
         map = new Torus(n,m);
     }
 
+    public void restartGame(int n, int m) {
+        map = new Torus(n, m);
+    }
+
     public void restartGame() {
-        map = new Torus(map.getN(), map.getM());
+        restartGame(map.getN(),map.getM());
     }
 
     public void update() {

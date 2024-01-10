@@ -113,6 +113,15 @@ public class Controller {
 
     //BACKBUTTONS
     public void mainmenuscreen(ActionEvent event) {
+        int newN = (int) view.getUserN();
+        int newM = (int) view.getUserM();
+        if (newM != view.getM() || newN != view.getN()) {
+            game.restartGame(newN, newM);
+            view.setM(newM);
+            view.setN(newN);
+            view.setDims();
+            view.initiateGameStart();
+        }
         view.showStartMenu();
     }
 
