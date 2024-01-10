@@ -278,24 +278,32 @@ public class Initiatescenes {
     }
 
     public void initiateLeaderBoard() {
+        Text scoresHeadText = new Text("Highscores: ");
+        scoresHeadText.setTextAlignment(TextAlignment.CENTER);
+        scoresHeadText.setFont(new Font("STENCIL", 40));
         scoresText = new Text("");
+        scoresText.setFont(new Font("STENCIL", 30));
         updateScoresText();
         Image back = new Image("BackButton.jpg");
         ImageView imgView = new ImageView(back);
         imgView.setFitHeight(20);
         imgView.setFitWidth(20);
         leaderboardBackBTN = new Button();
-        BorderPane root = new BorderPane(scoresText);
-        root.setTop(leaderboardBackBTN);
+        VBox root = new VBox(scoresHeadText, scoresText);
+        root.setSpacing(10);
+        root.setAlignment(Pos.CENTER);
+        BorderPane align = new BorderPane();
+        align.setTop(leaderboardBackBTN);
+        align.setCenter(root);
         leaderboardBackBTN.setPrefSize(20, 20);
         leaderboardBackBTN.setGraphic(imgView);
-        leaderboard = new Scene(root, 600, 300);
+        leaderboard = new Scene(align, 600, 300);
     }
 
     public void updateScoresText() {
-        String str = "HIGH SCORES:";
+        String str = "";
         for (int i : game.getLeaderBoardScores()) {
-            str += "\n" + i;
+            str += i + "\n";
         }
         scoresText.setText(str);
     }
