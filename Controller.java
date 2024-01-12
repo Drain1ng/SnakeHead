@@ -3,6 +3,8 @@ import java.util.InputMismatchException;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.scene.input.KeyCode;
@@ -27,8 +29,10 @@ public class Controller {
     public void togglePause() {
         if (isPaused) {
             timeline.play();
+            view.dimMusic(true);
         } else {
             timeline.pause();
+            view.dimMusic(false);
         }
         isPaused = !isPaused;
     }
@@ -53,6 +57,7 @@ public class Controller {
         } else {
             endGame(false);
             view.playDieSFX();
+            view.dimMusic(false);
         }
     }
 
@@ -102,6 +107,7 @@ public class Controller {
     //Restart game
     public void restart(ActionEvent event) {
         restart();
+        view.dimMusic(true);
     }
 
     public void restart() {
@@ -143,7 +149,9 @@ public class Controller {
         restart();
     }
 
-
+    public void soundOff(ActionEvent event) {
+        view.musicOff();
+    }
 
     //BACKBUTTONS
     public void mainmenuscreen(ActionEvent event) {
