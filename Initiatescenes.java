@@ -165,9 +165,18 @@ public class Initiatescenes {
         return leaderboardBackBTN;
     }
 
+    public BorderPane setTitle(String title) {
+        BorderPane titleBP = new BorderPane();
+        Text titleText = new Text(title);
+        titleBP.setTop(titleText);
+        titleText.setFont(new Font("Stencil", 55));
+        BorderPane.setAlignment(titleText, Pos.CENTER);
+        return titleBP;
+    }
+
     // Make Scenes
     public void initiateStartmenu() {
-        BorderPane menu = new BorderPane();
+        BorderPane titleBP = setTitle("WELCOME TO SNAKE");
         gameDiffMenu = new Button("New Game");
         gameDiffMenu.setMinWidth(200);
         settingsMenuBTN = new Button("Settings");
@@ -177,35 +186,38 @@ public class Initiatescenes {
         VBox mainbtns = new VBox(gameDiffMenu, settingsMenuBTN, leaderboardBTN);
         mainbtns.setAlignment(Pos.CENTER);
         mainbtns.setSpacing(5);
-        menu.setCenter(mainbtns);
-        mainmenu = new Scene(menu, 600, 300);
+        titleBP.setCenter(mainbtns);
+        mainmenu = new Scene(new StackPane(titleBP), 600, 300);
     }
 
     public void initiateNewGame() {
-        BorderPane root = new BorderPane();
-        // Not finished button(EASY)
-        startEasyBTN = new Button("Easy - Haha, NOOB");
+        BorderPane newGameMenu = new BorderPane();
+        BorderPane titleBP = setTitle("SELECT DIFFICULTY");
+        startEasyBTN = new Button("EASY");
         startEasyBTN.setMinWidth(300);
-        //
-        startNormalBTN = new Button("Normal");
+        startNormalBTN = new Button("NORMAL");
         startNormalBTN.setMinWidth(300);
         // Not finished button(HARD)
-        startHardBTN = new Button("When I spot Chris, my pena is ____");
+        startHardBTN = new Button("HARD");
         startHardBTN.setMinWidth(300);
         // Not finished button(EXTREME)
-        startExtremeBTN = new Button("Extreme");
+        startExtremeBTN = new Button("EXTREME");
         startExtremeBTN.setMinWidth(300);
         VBox difficulties = new VBox(startEasyBTN, startNormalBTN, startHardBTN, startExtremeBTN);
         difficulties.setAlignment(Pos.CENTER);
         difficulties.setSpacing(5);
         gameDiffMenuBackBTN = new Button();
         makeBackButton(gameDiffMenuBackBTN);
-        root.setTop(gameDiffMenuBackBTN);
-        root.setCenter(difficulties);
-        gameDiffs = new Scene(root, 600, 300);
+        newGameMenu.setTop(gameDiffMenuBackBTN);
+        newGameMenu.setCenter(difficulties);
+        gameDiffs = new Scene(new StackPane(titleBP, newGameMenu), 600, 300);
     }
 
     public void initiateSettings() {
+
+        BorderPane settingsMenu = new BorderPane();
+        BorderPane titleBP = setTitle("SETTINGS");
+
         Label heightCaption = new Label("Board Height");
         nSlider = new Slider(5, 100, view.getN());
         nSlider.setShowTickMarks(true);
@@ -253,12 +265,12 @@ public class Initiatescenes {
         soundEffects.setSelected(true);
         settingsMenuBackBTN = new Button();
         makeBackButton(settingsMenuBackBTN);
-        BorderPane root = new BorderPane();
+        
         VBox gameSettings = new VBox(heightHBox, widthHBox, music, soundEffects);
         gameSettings.setAlignment(Pos.CENTER);
-        root.setTop(settingsMenuBackBTN);
-        root.setCenter(gameSettings);
-        settings = new Scene(root, 600, 300);
+        settingsMenu.setTop(settingsMenuBackBTN);
+        settingsMenu.setCenter(gameSettings);
+        settings = new Scene(new StackPane(titleBP, settingsMenu), 600, 300);
     }
 
     public void initiateEndGame() {
@@ -277,21 +289,21 @@ public class Initiatescenes {
     }
 
     public void initiateLeaderBoard() {
-        Text scoresHeadText = new Text("Highscores: ");
-        scoresHeadText.setTextAlignment(TextAlignment.CENTER);
-        scoresHeadText.setFont(new Font("STENCIL", 40));
+
+        BorderPane hsMenu = new BorderPane();
+        BorderPane titleBP = setTitle("HIGH SCORES");
         scoresText = new Text("");
         scoresText.setFont(new Font("STENCIL", 30));
         updateScoresText();
         leaderboardBackBTN = new Button();
         makeBackButton(leaderboardBackBTN);
-        VBox root = new VBox(scoresHeadText, scoresText);
+        VBox root = new VBox(scoresText);
         root.setSpacing(10);
         root.setAlignment(Pos.CENTER);
-        BorderPane align = new BorderPane();
-        align.setTop(leaderboardBackBTN);
-        align.setCenter(root);
-        leaderboard = new Scene(align, 600, 300);
+        
+        hsMenu.setTop(leaderboardBackBTN);
+        hsMenu.setCenter(root);
+        leaderboard = new Scene(new StackPane(titleBP, hsMenu), 600, 300);
     }
 
     public Button makeBackButton(Button backBtn) {

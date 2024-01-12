@@ -74,6 +74,8 @@ public class View extends Application {
     //https://docs.oracle.com/javase/8/javafx/api/javafx/application/Application.Parameters.html#getRaw--
     //https://docs.oracle.com/javase/8/javafx/api/javafx/application/Application.Parameters.html
     public void init() {
+        n = 10;
+        m = 10;
         setDims();
     }
 
@@ -259,8 +261,6 @@ public class View extends Application {
     }
 
     public void setDims() {
-        n = 10;
-        m = 10;
         Rectangle2D screenBounds = Screen.getPrimary().getBounds();
         int maxWidth = (int) screenBounds.getWidth();
         int maxHeight = (int) (screenBounds.getHeight() - screenBounds.getHeight() / 10);
