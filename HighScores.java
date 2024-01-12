@@ -1,5 +1,4 @@
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -10,6 +9,7 @@ public class HighScores {
     private Scanner reader;
 
     // ensure capacity documentation: https://docs.oracle.com/javase/8/docs/api/java/util/ArrayList.html
+    // Bastian
     public void updateLeaderBoard(int score) {
         data = new File("Data.txt");
         try {
@@ -40,6 +40,7 @@ public class HighScores {
         }
     }
 
+    //Bastian, Thomas
     public ArrayList<Integer> getLeaderBoard() {
         ArrayList<Integer> scores = new ArrayList<>();
         scores.ensureCapacity(5);

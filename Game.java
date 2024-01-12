@@ -1,5 +1,6 @@
-import java.util.ArrayList;
+//Thomas unless explicitly stated
 
+import java.util.ArrayList;
 public class Game {
     private Torus map;
     private HighScores highScores;
@@ -8,11 +9,11 @@ public class Game {
         map = new Torus(n,m);
         highScores = new HighScores();
     }
-
+    //Chris
     public void restartGame(int n, int m) {
         map = new Torus(n, m);
     }
-
+    //Chris
     public void restartGame() {
         restartGame(map.getN(),map.getM());
     }
@@ -36,7 +37,8 @@ public class Game {
     public boolean isLost() {
         return !map.isSnakeAlive();
     }
-
+    
+    //Bastian
     public int getScore() {
         return map.getSnake().getBody().size() - 2;
     }
@@ -60,14 +62,17 @@ public class Game {
     public Direction getDirection() {
         return map.getSnake().getDirection();
     }
+    
     public Point getFood() {
         return map.getFood();
     }
 
+    //Bastian
     public void updateLeaderBoard(int newScore) {
         highScores.updateLeaderBoard(newScore);
     }
 
+    //Bastian
     public ArrayList<Integer> getLeaderBoardScores() {
         return highScores.getLeaderBoard();
     }

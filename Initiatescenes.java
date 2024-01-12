@@ -1,16 +1,8 @@
-import javafx.animation.Animation;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
-import javafx.application.Application;
+//Mainly the scenes have been made by Christian and Chris.
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Pos;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
-import javafx.scene.SnapshotParameters;
-import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
@@ -18,27 +10,12 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
-import javafx.scene.paint.Color;
-import javafx.stage.Stage;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.transform.Rotate;
-import java.io.File;
-import javafx.scene.media.*;
-import java.util.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import java.io.PipedReader;
-import java.util.*;
-import javax.swing.Action;
-import javafx.stage.Screen;
-import javafx.util.Duration;
 
 public class Initiatescenes {
     private Scene gameDiffs;
@@ -174,7 +151,6 @@ public class Initiatescenes {
         return titleBP;
     }
 
-    // Make Scenes
     public void initiateStartmenu() {
         BorderPane titleBP = setTitle("WELCOME TO SNAKE");
         gameDiffMenu = new Button("New Game");
@@ -185,7 +161,7 @@ public class Initiatescenes {
         leaderboardBTN.setMinWidth(200);
         VBox mainbtns = new VBox(gameDiffMenu, settingsMenuBTN, leaderboardBTN);
         mainbtns.setAlignment(Pos.CENTER);
-        mainbtns.setSpacing(5);
+        mainbtns.setSpacing(10);
         titleBP.setCenter(mainbtns);
         mainmenu = new Scene(new StackPane(titleBP), 600, 300);
     }
@@ -197,15 +173,13 @@ public class Initiatescenes {
         startEasyBTN.setMinWidth(300);
         startNormalBTN = new Button("NORMAL");
         startNormalBTN.setMinWidth(300);
-        // Not finished button(HARD)
         startHardBTN = new Button("HARD");
         startHardBTN.setMinWidth(300);
-        // Not finished button(EXTREME)
         startExtremeBTN = new Button("EXTREME");
         startExtremeBTN.setMinWidth(300);
         VBox difficulties = new VBox(startEasyBTN, startNormalBTN, startHardBTN, startExtremeBTN);
         difficulties.setAlignment(Pos.CENTER);
-        difficulties.setSpacing(5);
+        difficulties.setSpacing(10);
         gameDiffMenuBackBTN = new Button();
         makeBackButton(gameDiffMenuBackBTN);
         newGameMenu.setTop(gameDiffMenuBackBTN);
@@ -272,7 +246,8 @@ public class Initiatescenes {
         settingsMenu.setCenter(gameSettings);
         settings = new Scene(new StackPane(titleBP, settingsMenu), 600, 300);
     }
-
+    
+    //Chris
     public void initiateEndGame() {
         VBox gameoverBox = new VBox();
         gameoverBox.setSpacing(10);
@@ -288,8 +263,8 @@ public class Initiatescenes {
         endGame = new Scene(gameoverBox, 600, 300);
     }
 
+    //Bastian, Chris
     public void initiateLeaderBoard() {
-
         BorderPane hsMenu = new BorderPane();
         BorderPane titleBP = setTitle("HIGH SCORES");
         scoresText = new Text("");
@@ -300,12 +275,12 @@ public class Initiatescenes {
         VBox root = new VBox(scoresText);
         root.setSpacing(10);
         root.setAlignment(Pos.CENTER);
-        
         hsMenu.setTop(leaderboardBackBTN);
         hsMenu.setCenter(root);
         leaderboard = new Scene(new StackPane(titleBP, hsMenu), 600, 300);
     }
 
+    //Christian
     public Button makeBackButton(Button backBtn) {
         Image back = new Image("BackButton.jpg");
         ImageView imgView = new ImageView(back);
@@ -316,6 +291,7 @@ public class Initiatescenes {
         return backBtn;
     }
 
+    //Bastian
     public void updateScoresText() {
         String str = "";
         for (int i : game.getLeaderBoardScores()) {

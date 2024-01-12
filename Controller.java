@@ -1,10 +1,6 @@
-import java.util.InputMismatchException;
-
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.scene.input.KeyCode;
@@ -19,13 +15,14 @@ public class Controller {
     private Timeline timeline;
     private int lastScore;
 
+    //Thomas
     public void startGame() {
         timeline = new Timeline(new KeyFrame(Duration.seconds(loopInterval), this::updateGame));
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.playFromStart();
         isPaused = false;
     }
-
+    //Thomas, Bastian
     public void togglePause() {
         if (isPaused) {
             timeline.play();
@@ -42,6 +39,7 @@ public class Controller {
         this.view = view;
     }
 
+    //Thomas, Bastian
     public void updateGame(Event event) {
         game.update();
         view.updateScore();
@@ -60,13 +58,14 @@ public class Controller {
             view.dimMusic(false);
         }
     }
-
+    //Thomas, Bastian
     public void endGame(boolean win) {
         timeline.stop();
         game.updateLeaderBoard(game.getScore());
         view.showEndGame(win);
     }
-
+    
+    //Bastian
     public int getDirectionDegrees() {
         switch (game.getDirection()) {
             case UP:
@@ -81,7 +80,7 @@ public class Controller {
                 return 0;
         }
     }
-
+    //Bastian, Thomas
     public void handleKeyPress(KeyEvent event) {
         if (event.getCode() == KeyCode.ESCAPE) {
             togglePause();
@@ -104,19 +103,19 @@ public class Controller {
         }
 
     }
-    //Restart game
+    //Chris, Bastian
     public void restart(ActionEvent event) {
         restart();
         view.dimMusic(true);
     }
-
+    //Thomas, Chris
     public void restart() {
         game.restartGame();
         lastScore = game.getScore();
         view.playGame();
     }
 
-    //STARTMENU BUTTONS
+    //Christian, Chris
     public void showGamediffBTN(ActionEvent event) {
         view.showGameDiff();
     }
@@ -129,6 +128,7 @@ public class Controller {
         view.showLeaderBoard();
     }
     //GAMEDIFFICULTY BUTTONS. Only extreme scales to board size
+    //Christian, Thomas, Chris
     public void startEasyGame(ActionEvent event) {
         this.loopInterval = 0.7;
         restart();
@@ -149,11 +149,12 @@ public class Controller {
         restart();
     }
 
+    //Bastian
     public void soundOff(ActionEvent event) {
         view.musicOff();
     }
 
-    //BACKBUTTONS
+    //BACKBUTTONS Thomas, Chris
     public void mainmenuscreen(ActionEvent event) {
         int newN = (int) view.getUserN();
         int newM = (int) view.getUserM();
@@ -166,17 +167,4 @@ public class Controller {
         }
         view.showStartMenu();
     }
-
-
-
-
-
-
-    /*
-    public void newGameBtnHandle(ActionEvent event) {
-        System.out.println(3);
-        view.showGameDiff();
-    }
-    */
-
 }

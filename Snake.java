@@ -1,3 +1,4 @@
+//Thomas
 import java.util.ArrayList;
 
 public class Snake {
@@ -83,7 +84,6 @@ public class Snake {
     public ArrayList<Point> getBody() {
         return body;
     }
-
 
     public Point getHead() {
         return body.get(size - 1);
