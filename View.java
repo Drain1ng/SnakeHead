@@ -1,47 +1,24 @@
 //run the following 2 commands to play:
 //javac -classpath . *.java
 //java View.java n m
-import javafx.animation.Animation;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.application.Application;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.SnapshotParameters;
-import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.transform.Rotate;
 import java.io.File;
 import javafx.scene.media.*;
 import java.util.*;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.Slider;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import java.io.PipedReader;
-import java.util.*;
-import javax.swing.Action;
 import javafx.stage.Screen;
-import javafx.util.Duration;
 
 public class View extends Application {
     private int width;
@@ -56,7 +33,7 @@ public class View extends Application {
     private BorderPane root2;
     private int n,m;
     private Image head, apple;
-    private ImageView headV, appleV;
+    private ImageView headV;
     private SnapshotParameters parameters;
     private Stage primaryStage;
     private Initiatescenes sceneMENU;
@@ -78,9 +55,8 @@ public class View extends Application {
         m = 10;
         setDims();
     }
-
-
-
+    
+    //Chris, Christian, Bastian
     public void start(Stage primaryStage) {
         this.primaryStage = primaryStage;
         game = new Game(n, m);
@@ -90,41 +66,45 @@ public class View extends Application {
         initiateButtons();
         initiateGameStart();
         showStartMenu();
+        centerPrimaryStage(300, 600);
+        primaryStage.setTitle("SNAKE");
+        primaryStage.show();
     }
-
+    
+    //Christian
     public void playGame() {
         updateScore();
         updateSnake(0);
-        primaryStage.setTitle("Snake");
         primaryStage.setScene(gameScene);
         centerGame();
         playMusic(false);
         control.startGame();
     }
 
-
+    //Christian
     public void showStartMenu() {
-        primaryStage.setTitle("Snake");
         primaryStage.setScene(sceneMENU.getMenu());
         playMusic(true);
-        primaryStage.show();
+        
     }
-
+    
+    //Christian
     public void showGameDiff() {
-        primaryStage.setTitle("Difficulties");
         primaryStage.setScene(sceneMENU.getNewGame());
     }
 
+    //Christian
     public void showSettings() {
-        primaryStage.setTitle("Settings");
         primaryStage.setScene(sceneMENU.getSettings());
     }
 
+    //Christian
     public void showLeaderBoard() {
         sceneMENU.updateScoresText();
         primaryStage.setScene(sceneMENU.getLeaderboard());
     }
 
+    //Chris
     public void initiateButtons() {
         sceneMENU.getGameDiffBTN().setOnAction(control::showGamediffBTN);
         sceneMENU.getSettingsMenuBTN().setOnAction(control::showSettingsBTN);
@@ -141,18 +121,20 @@ public class View extends Application {
         sceneMENU.musicCheckBox().setOnAction(control::soundOff);
     }
 
+    //Bastian
     public void updateScore() {
         score.setText("  Score: " + game.getScore());
     }
 
+    //Chris, Bastian
     public void showEndGame(boolean win) {
         String message = (win ? "GAME WON" : "GAME LOST") + "\n Score: " + game.getScore() ;
         sceneMENU.getEndText().setText(message);
-        primaryStage.setTitle("Endgame");
         centerPrimaryStage(300, 600);
         primaryStage.setScene(sceneMENU.getEndScene());
     }
 
+    //Christian, Thomas
     public void drawGrid() {
         gc.setStroke(Color.GRAY);
         for (int i = 0; i < width / blocksSize; i++) {
@@ -164,7 +146,7 @@ public class View extends Application {
 
     }
 
-    //clear Canvas https://stackoverflow.com/questions/27203671/javafx-how-to-clear-the-canvas
+    //Chris, Bastian
     public void updateSnake(int deg) {
         gcSnake.clearRect(0, 0, gc.getCanvas().getWidth(), gc.getCanvas().getHeight());
         List<Point> body = game.getBody();
@@ -173,27 +155,28 @@ public class View extends Application {
             if(game.getSnakeHead() == snake) {
                 gcSnake.drawImage(rotateImage(deg), snake.getX() * blocksSize, snake.getY() * blocksSize, blocksSize, blocksSize);
             } else {
-                gcSnake.setFill(Color.rgb(0, 119, 0)); //samme value som slange billede
+                gcSnake.setFill(Color.rgb(0, 119, 0));
                 gcSnake.fillRoundRect(snake.getX() * blocksSize + 0.05 * blocksSize, snake.getY() * blocksSize + 0.05 * blocksSize, blocksSize * 0.9, blocksSize* 0.90, blocksSize * 0.5, blocksSize * 0.5);
             }
         }
         gcSnake.drawImage(apple, food.getX() * blocksSize, food.getY() * blocksSize, blocksSize, blocksSize);
     }
 
+    //Bastian
     public void initiateText() {
         score = new Text("  Score: " + 0);
         root2.setTop(score);
         score.setFont(new Font("Ariel", 32));
         score.setFill(Color.GREEN);
     }
-
+    //Bastian
     public void initiatePicture() {
         parameters = new SnapshotParameters();
         head = new Image("Head.jpg");
         headV = new ImageView(head);
         apple = new Image("apple.png");
     }
-
+    //Bastian + all sound methods
     public void initiateSound() {
         //SFX
         String eatSound = new File("Eat.wav").toURI().toString();
@@ -210,7 +193,6 @@ public class View extends Application {
         menuMusic.setCycleCount(MediaPlayer.INDEFINITE);
         gameMusic.setCycleCount(MediaPlayer.INDEFINITE);
     }
-
     public void playEatSFX() {
         if (sceneMENU.SFKCheckBox().isSelected()) {
             eatSFX.play();
@@ -245,7 +227,7 @@ public class View extends Application {
             }
         }
     }
-
+    
     public void dimMusic(boolean playing) {
         if(playing) {
             gameMusic.setVolume(1);
@@ -254,12 +236,15 @@ public class View extends Application {
         }
     }
 
+    //Bastian
     public Image rotateImage(int deg) {
         headV.setRotate(deg);
         parameters.setFill(Color.TRANSPARENT);
         return headV.snapshot(parameters, null);
     }
 
+
+    //Thomas
     public void setDims() {
         Rectangle2D screenBounds = Screen.getPrimary().getBounds();
         int maxWidth = (int) screenBounds.getWidth();
@@ -274,23 +259,28 @@ public class View extends Application {
             height += n;
         }
     }
-
+    
+    //Thomas
     public void centerGame() {
         centerPrimaryStage(this.height,this.width);
     }
-
+    
+    //https://stackoverflow.com/questions/29350181/how-to-center-a-window-properly-in-java-fx
+    //Thomas
     public void centerPrimaryStage(int height, int width) {
         Rectangle2D screenBounds = Screen.getPrimary().getBounds();
         primaryStage.setX((screenBounds.getWidth() - width) / 2);
         primaryStage.setY((screenBounds.getHeight() - height * 1.1) / 2);
     }
 
+    //Christian
     public void drawBackground() {
         gcBack.setFill(Color.BLACK);
         gcBack.fillRect(0, 0, gc.getCanvas().getWidth(), gc.getCanvas().getHeight());
         drawGrid();
     }
 
+    //Chris
     public void initiateGameStart() {
         Canvas canvas = new Canvas(width, height);
         gc = canvas.getGraphicsContext2D();
