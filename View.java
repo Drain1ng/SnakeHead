@@ -74,15 +74,6 @@ public class View extends Application {
     //https://docs.oracle.com/javase/8/javafx/api/javafx/application/Application.Parameters.html#getRaw--
     //https://docs.oracle.com/javase/8/javafx/api/javafx/application/Application.Parameters.html
     public void init() {
-        List<String> args = getParameters().getRaw();
-        if (args.size() != 2) {
-                throw new IllegalArgumentException("Must be 2 arguments");
-        }
-        n = Integer.parseInt(args.get(0));
-        m = Integer.parseInt(args.get(1));
-        if (n < 5 || n > 100 || m < 5 || m > 100) {
-                throw new IllegalArgumentException("Must be 2 arguments");
-        }
         setDims();
     }
 
@@ -92,7 +83,7 @@ public class View extends Application {
         this.primaryStage = primaryStage;
         game = new Game(n, m);
         control = new Controller(game, this);
-        sceneMENU = new Initiatescenes(game);
+        sceneMENU = new Initiatescenes(game,this);
         initiateSound();
         initiateButtons();
         initiateGameStart();
@@ -200,7 +191,7 @@ public class View extends Application {
         headV = new ImageView(head);
         apple = new Image("apple.png");
     }
-    
+
     public void initiateSound() {
         //SFX
         String eatSound = new File("Eat.wav").toURI().toString();
@@ -268,6 +259,8 @@ public class View extends Application {
     }
 
     public void setDims() {
+        n = 10;
+        m = 10;
         Rectangle2D screenBounds = Screen.getPrimary().getBounds();
         int maxWidth = (int) screenBounds.getWidth();
         int maxHeight = (int) (screenBounds.getHeight() - screenBounds.getHeight() / 10);

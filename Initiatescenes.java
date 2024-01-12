@@ -64,9 +64,11 @@ public class Initiatescenes {
     private Slider mSlider;
     private CheckBox music, soundEffects;
     private Game game;
+    private View view;
 
 
-    public Initiatescenes(Game game) {
+    public Initiatescenes(Game game, View view) {
+        this.view = view;
         this.game = game;
         initiateStartmenu();
         initiateNewGame();
@@ -205,13 +207,13 @@ public class Initiatescenes {
 
     public void initiateSettings() {
         Label heightCaption = new Label("Board Height");
-        nSlider = new Slider(5, 100, 5);
+        nSlider = new Slider(5, 100, view.getN());
         nSlider.setShowTickMarks(true);
         nSlider.setMajorTickUnit(5);
         nSlider.setBlockIncrement(1);
         nSlider.setSnapToTicks(true);
         nSlider.setMaxWidth(300);
-        Label heightValue = new Label(Integer.toString(5));
+        Label heightValue = new Label(Integer.toString(view.getN()));
         nSlider.valueProperty().addListener(new ChangeListener<Number>() {
 
             @Override
@@ -226,13 +228,13 @@ public class Initiatescenes {
         heightHBox.setSpacing(20);
 
         Label widthCaption = new Label("Board Width");
-        mSlider = new Slider(5, 100, 5);
+        mSlider = new Slider(5, 100, view.getM());
         mSlider.setShowTickMarks(true);
         mSlider.setMajorTickUnit(5);
         mSlider.setBlockIncrement(1);
         mSlider.setSnapToTicks(true);
         mSlider.setMaxWidth(300);
-        Label widthValue = new Label(Integer.toString(5));
+        Label widthValue = new Label(Integer.toString(view.getM()));
         mSlider.valueProperty().addListener(new ChangeListener<Number>() {
 
             @Override
