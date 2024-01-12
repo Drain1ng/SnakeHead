@@ -62,10 +62,13 @@ public class Initiatescenes {
     private Button retryBTN;
     private Slider nSlider;
     private Slider mSlider;
+    private CheckBox music, soundEffects;
     private Game game;
+    private View view;
 
 
-    public Initiatescenes(Game game) {
+    public Initiatescenes(Game game, View view) {
+        this.view = view;
         this.game = game;
         initiateStartmenu();
         initiateNewGame();
@@ -122,6 +125,14 @@ public class Initiatescenes {
         return endGameBackBTN;
     }
 
+    public CheckBox musicCheckBox() {
+        return music;
+    }
+
+    public CheckBox SFKCheckBox() {
+        return soundEffects;
+    }
+
     public Scene getMenu() {
         return mainmenu;
     }
@@ -163,10 +174,6 @@ public class Initiatescenes {
         settingsMenuBTN.setMinWidth(200);
         leaderboardBTN = new Button("High Scores");
         leaderboardBTN.setMinWidth(200);
-        Text headMain = new Text("Snake");
-        headMain.setFont(new Font("Stencil", 60));
-        menu.setTop(headMain);
-        BorderPane.setAlignment(headMain, Pos.CENTER);
         VBox mainbtns = new VBox(gameDiffMenu, settingsMenuBTN, leaderboardBTN);
         mainbtns.setAlignment(Pos.CENTER);
         mainbtns.setSpacing(5);
@@ -176,46 +183,37 @@ public class Initiatescenes {
 
     public void initiateNewGame() {
         BorderPane root = new BorderPane();
+        // Not finished button(EASY)
         startEasyBTN = new Button("Easy - Haha, NOOB");
         startEasyBTN.setMinWidth(300);
+        //
         startNormalBTN = new Button("Normal");
         startNormalBTN.setMinWidth(300);
+        // Not finished button(HARD)
         startHardBTN = new Button("When I spot Chris, my pena is ____");
         startHardBTN.setMinWidth(300);
+        // Not finished button(EXTREME)
         startExtremeBTN = new Button("Extreme");
         startExtremeBTN.setMinWidth(300);
-
-        Image back = new Image("BackButton.jpg");
-        ImageView view = new ImageView(back);
-        view.setFitHeight(20);
-        view.setFitWidth(20);
-        gameDiffMenuBackBTN = new Button();
-        gameDiffMenuBackBTN.setPrefSize(20, 20);
-        gameDiffMenuBackBTN.setGraphic(view);
-        Text headDifficulty = new Text("Difficulty");
-        headDifficulty.setFont(new Font("Stencil", 60));
-        headDifficulty.setTextAlignment(TextAlignment.CENTER);
-        VBox difficulties = new VBox(headDifficulty, startEasyBTN, startNormalBTN, startHardBTN, startExtremeBTN);
+        VBox difficulties = new VBox(startEasyBTN, startNormalBTN, startHardBTN, startExtremeBTN);
         difficulties.setAlignment(Pos.CENTER);
         difficulties.setSpacing(5);
+        gameDiffMenuBackBTN = new Button();
+        makeBackButton(gameDiffMenuBackBTN);
         root.setTop(gameDiffMenuBackBTN);
         root.setCenter(difficulties);
-        BorderPane headline = new BorderPane();
-        headline.setTop(headDifficulty);
-        BorderPane.setAlignment(headDifficulty, Pos.CENTER);
-        
-        gameDiffs = new Scene(new StackPane(headline, root), 600, 300);
+        gameDiffs = new Scene(root, 600, 300);
     }
 
     public void initiateSettings() {
         Label heightCaption = new Label("Board Height");
-        nSlider = new Slider(5, 100, 5);
+        nSlider = new Slider(5, 100, view.getN());
         nSlider.setShowTickMarks(true);
         nSlider.setMajorTickUnit(5);
         nSlider.setBlockIncrement(1);
         nSlider.setSnapToTicks(true);
         nSlider.setMaxWidth(300);
-        Label heightValue = new Label(Integer.toString(5));
+        Label heightValue = new Label(Integer.toString(view.getN()));
         nSlider.valueProperty().addListener(new ChangeListener<Number>() {
 
             @Override
@@ -230,13 +228,13 @@ public class Initiatescenes {
         heightHBox.setSpacing(20);
 
         Label widthCaption = new Label("Board Width");
-        mSlider = new Slider(5, 100, 5);
+        mSlider = new Slider(5, 100, view.getM());
         mSlider.setShowTickMarks(true);
         mSlider.setMajorTickUnit(5);
         mSlider.setBlockIncrement(1);
         mSlider.setSnapToTicks(true);
         mSlider.setMaxWidth(300);
-        Label widthValue = new Label(Integer.toString(5));
+        Label widthValue = new Label(Integer.toString(view.getM()));
         mSlider.valueProperty().addListener(new ChangeListener<Number>() {
 
             @Override
@@ -249,28 +247,18 @@ public class Initiatescenes {
         HBox widthHBox = new HBox(widthCaption, mSlider, widthValue);
         widthHBox.setAlignment(Pos.CENTER);
         widthHBox.setSpacing(20);
-
-        CheckBox music = new CheckBox("Music");
-        CheckBox soundEffects = new CheckBox("Sound Effects");
-
-        Image back = new Image("BackButton.jpg");
-        ImageView view = new ImageView(back);
-        view.setFitHeight(20);
-        view.setFitWidth(20);
+        music = new CheckBox("Music");
+        soundEffects = new CheckBox("Sound Effects");
+        music.setSelected(true);
+        soundEffects.setSelected(true);
         settingsMenuBackBTN = new Button();
-        settingsMenuBackBTN.setPrefSize(20, 20);
-        settingsMenuBackBTN.setGraphic(view);
-        Text headSettings = new Text("Settings");
-        headSettings.setFont(new Font("Stencil", 60));
+        makeBackButton(settingsMenuBackBTN);
         BorderPane root = new BorderPane();
         VBox gameSettings = new VBox(heightHBox, widthHBox, music, soundEffects);
         gameSettings.setAlignment(Pos.CENTER);
         root.setTop(settingsMenuBackBTN);
         root.setCenter(gameSettings);
-        BorderPane headline = new BorderPane();
-        headline.setTop(headSettings);
-        BorderPane.setAlignment(headSettings, Pos.CENTER);
-        settings = new Scene(new StackPane(headline, root), 600, 300);
+        settings = new Scene(root, 600, 300);
     }
 
     public void initiateEndGame() {
@@ -290,27 +278,30 @@ public class Initiatescenes {
 
     public void initiateLeaderBoard() {
         Text scoresHeadText = new Text("Highscores: ");
-        scoresHeadText.setFont(new Font("STENCIL", 60));
+        scoresHeadText.setTextAlignment(TextAlignment.CENTER);
+        scoresHeadText.setFont(new Font("STENCIL", 40));
         scoresText = new Text("");
         scoresText.setFont(new Font("STENCIL", 30));
         updateScoresText();
-        Image back = new Image("BackButton.jpg");
-        ImageView imgView = new ImageView(back);
-        imgView.setFitHeight(20);
-        imgView.setFitWidth(20);
         leaderboardBackBTN = new Button();
-        VBox root = new VBox(scoresText);
+        makeBackButton(leaderboardBackBTN);
+        VBox root = new VBox(scoresHeadText, scoresText);
         root.setSpacing(10);
         root.setAlignment(Pos.CENTER);
         BorderPane align = new BorderPane();
         align.setTop(leaderboardBackBTN);
         align.setCenter(root);
-        BorderPane headline = new BorderPane();
-        headline.setTop(scoresHeadText);
-        BorderPane.setAlignment(scoresHeadText, Pos.CENTER);
-        leaderboardBackBTN.setPrefSize(20, 20);
-        leaderboardBackBTN.setGraphic(imgView);
-        leaderboard = new Scene(new StackPane(headline, align), 600, 300);
+        leaderboard = new Scene(align, 600, 300);
+    }
+
+    public Button makeBackButton(Button backBtn) {
+        Image back = new Image("BackButton.jpg");
+        ImageView imgView = new ImageView(back);
+        imgView.setFitHeight(20);
+        imgView.setFitWidth(20);
+        backBtn.setPrefSize(20, 20);
+        backBtn.setGraphic(imgView);
+        return backBtn;
     }
 
     public void updateScoresText() {

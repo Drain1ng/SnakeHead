@@ -5,6 +5,8 @@ import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -61,6 +63,7 @@ public class View extends Application {
     private StackPane root1;
     private Scene gameScene;
     private AudioClip eatSFX, dieSFX;
+    private MediaPlayer menuMusic, gameMusic;
 
     public static void main(String[] args) {
         launch(args);
@@ -71,15 +74,6 @@ public class View extends Application {
     //https://docs.oracle.com/javase/8/javafx/api/javafx/application/Application.Parameters.html#getRaw--
     //https://docs.oracle.com/javase/8/javafx/api/javafx/application/Application.Parameters.html
     public void init() {
-        List<String> args = getParameters().getRaw();
-        if (args.size() != 2) {
-                throw new IllegalArgumentException("Must be 2 arguments");
-        }
-        n = Integer.parseInt(args.get(0));
-        m = Integer.parseInt(args.get(1));
-        if (n < 5 || n > 100 || m < 5 || m > 100) {
-                throw new IllegalArgumentException("Must be 2 arguments");
-        }
         setDims();
     }
 
@@ -89,7 +83,7 @@ public class View extends Application {
         this.primaryStage = primaryStage;
         game = new Game(n, m);
         control = new Controller(game, this);
-        sceneMENU = new Initiatescenes(game);
+        sceneMENU = new Initiatescenes(game,this);
         initiateSound();
         initiateButtons();
         initiateGameStart();
@@ -102,6 +96,7 @@ public class View extends Application {
         primaryStage.setTitle("Snake");
         primaryStage.setScene(gameScene);
         centerGame();
+        playMusic(false);
         control.startGame();
     }
 
@@ -109,6 +104,7 @@ public class View extends Application {
     public void showStartMenu() {
         primaryStage.setTitle("Snake");
         primaryStage.setScene(sceneMENU.getMenu());
+        playMusic(true);
         primaryStage.show();
     }
 
@@ -140,9 +136,8 @@ public class View extends Application {
         sceneMENU.endGameBackBTN().setOnAction(control::mainmenuscreen);
         sceneMENU.getRetryBTN().setOnAction(control::restart);
         sceneMENU.getLeaderboardBackButton().setOnAction(control::mainmenuscreen);
+        sceneMENU.musicCheckBox().setOnAction(control::soundOff);
     }
-
-
 
     public void updateScore() {
         score.setText("  Score: " + game.getScore());
@@ -194,22 +189,67 @@ public class View extends Application {
         parameters = new SnapshotParameters();
         head = new Image("Head.jpg");
         headV = new ImageView(head);
-        apple = new Image("Apple.png");
+        apple = new Image("apple.png");
     }
 
     public void initiateSound() {
+        //SFX
         String eatSound = new File("Eat.wav").toURI().toString();
         eatSFX = new AudioClip(eatSound);
         String deathSound = new File("Death.wav").toURI().toString();
         dieSFX = new AudioClip(deathSound);
+        //music
+        String menuMusicFile = new File("MenuMusic3.mp3").toURI().toString();
+        Media menuTrack = new Media(menuMusicFile);
+        menuMusic = new MediaPlayer(menuTrack);
+        String gameMusicFile = new File("GameMusic2.mp3").toURI().toString();
+        Media gameTrack = new Media(gameMusicFile);
+        gameMusic = new MediaPlayer(gameTrack);
+        menuMusic.setCycleCount(MediaPlayer.INDEFINITE);
+        gameMusic.setCycleCount(MediaPlayer.INDEFINITE);
     }
 
     public void playEatSFX() {
-        eatSFX.play();
+        if (sceneMENU.SFKCheckBox().isSelected()) {
+            eatSFX.play();
+        }
     }
 
     public void playDieSFX() {
-        dieSFX.play();
+        if (sceneMENU.SFKCheckBox().isSelected()) {
+            dieSFX.play();
+        }
+    }
+
+    public void musicOff() {
+        if (sceneMENU.musicCheckBox().isSelected()) {
+            menuMusic.play();
+        } else {
+            menuMusic.pause();
+        }
+    }
+
+    public void playMusic(boolean menu) {
+        dimMusic(true);
+        if (menu) {
+            gameMusic.pause();
+            if (sceneMENU.musicCheckBox().isSelected()) {
+                menuMusic.play();
+            }
+        } else {
+            menuMusic.pause();
+            if (sceneMENU.musicCheckBox().isSelected()) {
+                gameMusic.play();
+            }
+        }
+    }
+
+    public void dimMusic(boolean playing) {
+        if(playing) {
+            gameMusic.setVolume(1);
+        } else {
+            gameMusic.setVolume(0.3);
+        }
     }
 
     public Image rotateImage(int deg) {
@@ -219,6 +259,8 @@ public class View extends Application {
     }
 
     public void setDims() {
+        n = 10;
+        m = 10;
         Rectangle2D screenBounds = Screen.getPrimary().getBounds();
         int maxWidth = (int) screenBounds.getWidth();
         int maxHeight = (int) (screenBounds.getHeight() - screenBounds.getHeight() / 10);
@@ -289,6 +331,4 @@ public class View extends Application {
     public void setM(int newM) {
         m = newM;
     }
-
-
 }
