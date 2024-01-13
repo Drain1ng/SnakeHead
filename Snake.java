@@ -1,3 +1,4 @@
+//Thomas except som accessor methods by Bastian.
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 
@@ -64,5 +65,4 @@ public class Snake {
     public int getSize() {
         return size;
     }
-
 }

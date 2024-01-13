@@ -1,3 +1,4 @@
+//Thomas mainly. Some methods calling methods from Torus or Snake have been added by others
 import java.util.ArrayList;
 
 public class Game {
@@ -24,7 +25,7 @@ public class Game {
     }
 
     public int getScore() {
-        return map.getSnake().getBody().size() - 2; //bruger snakelength til at vurdere score
+        return map.getSnake().getBody().size() - 2; 
     }
 
     public boolean isGameWon() {
@@ -42,7 +43,7 @@ public class Game {
     public ArrayList<Point> getBody() {
         return map.getSnake().getBody();
     }
-
+    
     public Point getFood() {
         return map.getFood();
     }

@@ -34,10 +34,7 @@ public class View extends Application {
         launch(args);
     }
 
-    //https://openjfx.io/javadoc/17/javafx.graphics/javafx/application/Application.html#getParameters()
-    //https://stackoverflow.com/questions/24611789/how-to-pass-parameters-to-javafx-application
-    //https://docs.oracle.com/javase/8/javafx/api/javafx/application/Application.Parameters.html#getRaw--
-    //https://docs.oracle.com/javase/8/javafx/api/javafx/application/Application.Parameters.html
+    //Thomas
     public void init() {
         List<String> args = getParameters().getRaw();
         if (args.size() != 2) {
@@ -50,7 +47,7 @@ public class View extends Application {
         }
         setDims();
     }
-
+    //Chris & Bastian
     public void start(Stage primaryStage) {
         game = new Game(n, m);
         control = new Controller(game, this);
@@ -65,12 +62,12 @@ public class View extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
     }
-
+    //Bastian
     public void updateScore(int snakeLength) {
         scoreCount = snakeLength;
         score.setText("  Score: " + scoreCount);
     }
-
+    //Bastian
     public void message(boolean win) {
         String message = win ? "GOOD JOB" : "YOU LOSE";
         gc.setFill(javafx.scene.paint.Color.RED);
@@ -78,7 +75,7 @@ public class View extends Application {
         scoreEnd.setText(message + "\nScore: " + scoreCount);
         score.setText("");
     }
-
+    //Christian, Thomas
     public void drawGrid() {
         gc.setStroke(Color.GRAY);
         for (int i = 0; i < width / blocksSize; i++) {
@@ -91,6 +88,7 @@ public class View extends Application {
     }
 
     //clear Canvas https://stackoverflow.com/questions/27203671/javafx-how-to-clear-the-canvas
+    //Chris, Bastian, Christian
     public void updateSnake() {
         gcSnake.clearRect(0, 0, gc.getCanvas().getWidth(), gc.getCanvas().getHeight());
         List<Point> body = game.getBody();
@@ -107,7 +105,7 @@ public class View extends Application {
         gcSnake.setFill(javafx.scene.paint.Color.ORANGE);
         gcSnake.fillRect(food.getX() * blocksSize, food.getY() * blocksSize, blocksSize, blocksSize);
     }
-
+    //Bastian
     public void initiateText() {
         score = new Text("  Score: " + 0);
         scoreEnd = new Text("");
@@ -119,6 +117,7 @@ public class View extends Application {
         scoreEnd.setTextAlignment(TextAlignment.CENTER);
     }
 
+    //Thomas
     public void setDims() {
         Rectangle2D screenBounds = Screen.getPrimary().getBounds();
         int maxWidth = (int) screenBounds.getWidth();
@@ -133,13 +132,13 @@ public class View extends Application {
             height += n;
         }
     }
-
+    //Christian
     public void drawBackground() {
         gcBack.setFill(Color.BLACK);
         gcBack.fillRect(0, 0, gc.getCanvas().getWidth(), gc.getCanvas().getHeight());
         drawGrid();
     }
-
+    //Chris
     public Canvas[] drawGame() {
         Canvas canvas = new Canvas(width, height);
         gc = canvas.getGraphicsContext2D();
