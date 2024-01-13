@@ -50,6 +50,7 @@ public class Controller {
         }
         if (game.isWon()) {
             endGame(true);
+            view.dimMusic(false);
         } else if(!game.isLost()) {
             view.updateSnake(getDirectionDegrees());
         } else {
