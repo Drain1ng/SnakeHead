@@ -176,23 +176,26 @@ public class View extends Application {
         headV = new ImageView(head);
         apple = new Image("apple.png");
     }
+    
     //Bastian + all sound methods
     public void initiateSound() {
         //SFX
-        String eatSound = new File("Eat.wav").toURI().toString();
-        eatSFX = new AudioClip(eatSound);
-        String deathSound = new File("Death.wav").toURI().toString();
-        dieSFX = new AudioClip(deathSound);
+        String eatSoundFile = "/resources/sound/Eat.wav";
+        eatSFX = new AudioClip(getClass().getResource(eatSoundFile).toString());
+        String deathSoundFile = "/resources/sound/Death.wav";
+        dieSFX = new AudioClip(getClass().getResource(deathSoundFile).toString());
         //music
-        String menuMusicFile = new File("MenuMusic3.mp3").toURI().toString();
-        Media menuTrack = new Media(menuMusicFile);
+        String menuMusicFile = "/resources/sound/MenuMusic3.mp3";
+        Media menuTrack = new Media(getClass().getResource(menuMusicFile).toString());
         menuMusic = new MediaPlayer(menuTrack);
-        String gameMusicFile = new File("GameMusic2.mp3").toURI().toString();
-        Media gameTrack = new Media(gameMusicFile);
+        String gameMusicFile ="/resources/sound/GameMusic2.mp3";
+        Media gameTrack = new Media(getClass().getResource(gameMusicFile).toString());
         gameMusic = new MediaPlayer(gameTrack);
         menuMusic.setCycleCount(MediaPlayer.INDEFINITE);
         gameMusic.setCycleCount(MediaPlayer.INDEFINITE);
     }
+
+
     public void playEatSFX() {
         if (sceneMENU.SFKCheckBox().isSelected()) {
             eatSFX.play();
